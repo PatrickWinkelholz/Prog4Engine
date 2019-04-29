@@ -5,7 +5,7 @@
 #include <SDL_ttf.h>
 #include "Renderer.h"
 
-void dae::ResourceManager::Init(std::string&& dataPath)
+void engine::ResourceManager::Init(std::string&& dataPath)
 {
 	mDataPath = std::move(dataPath);
 	// load support for png and jpg, this takes a while!
@@ -26,7 +26,7 @@ void dae::ResourceManager::Init(std::string&& dataPath)
 	}
 }
 
-void dae::ResourceManager::LoadTexture(const std::string& file)
+void engine::ResourceManager::LoadTexture(const std::string& file)
 {
 	std::string fullPath = mDataPath + file;
 	SDL_Texture *texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
@@ -37,7 +37,7 @@ void dae::ResourceManager::LoadTexture(const std::string& file)
 	m_Textures[file.substr(0, file.rfind('.'))] = texture;
 }
 
-void dae::ResourceManager::LoadFont(const std::string& file, unsigned int size)
+void engine::ResourceManager::LoadFont(const std::string& file, unsigned int size)
 {
 	TTF_Font* font = TTF_OpenFont((mDataPath + file).c_str(), size);
 	if (font == nullptr)
@@ -47,7 +47,7 @@ void dae::ResourceManager::LoadFont(const std::string& file, unsigned int size)
 	m_Fonts[file.substr(0, file.rfind('.'))] = font;
 }
 
-void dae::ResourceManager::ReleaseAll() 
+void engine::ResourceManager::ReleaseAll() 
 {
 	for (std::pair<const std::string, TTF_Font *> p : m_Fonts) 
 	{
@@ -61,22 +61,22 @@ void dae::ResourceManager::ReleaseAll()
 	}
 }
 
-SDL_Texture* dae::ResourceManager::GetTexture(const std::string& textureName)
+SDL_Texture* engine::ResourceManager::GetTexture(const std::string& textureName)
 {
 	return m_Textures[textureName];
 }
 
-TTF_Font* dae::ResourceManager::GetFont(const std::string& fontName)
+TTF_Font* engine::ResourceManager::GetFont(const std::string& fontName)
 {
 	return m_Fonts[fontName];
 }
 
-SDL_Texture* dae::ResourceManager::GetTexture(const std::string&& textureName) 
+SDL_Texture* engine::ResourceManager::GetTexture(const std::string&& textureName) 
 {
 	return m_Textures[textureName];
 }
 
-TTF_Font* dae::ResourceManager::GetFont(const std::string&& fontName)
+TTF_Font* engine::ResourceManager::GetFont(const std::string&& fontName)
 {
 	return m_Fonts[fontName];
 }

@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::Update(float deltaTime)
+void engine::SceneManager::Update(float deltaTime)
 {
 	for(auto scene : mScenes)
 	{
@@ -10,12 +10,12 @@ void dae::SceneManager::Update(float deltaTime)
 	}
 }
 
-void dae::SceneManager::FixedUpdate() 
+void engine::SceneManager::FixedUpdate() 
 {
 	
 }
 
-void dae::SceneManager::Render()
+void engine::SceneManager::Render()
 {
 	//only one scene should render
 	for (const auto scene : mScenes)
@@ -24,7 +24,7 @@ void dae::SceneManager::Render()
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+engine::Scene& engine::SceneManager::CreateScene(const std::string& name)
 {
 	const auto scene = std::shared_ptr<Scene>(new Scene(name));
 	mScenes.push_back(scene);

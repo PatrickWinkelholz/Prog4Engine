@@ -13,7 +13,7 @@
 #include "HudText.h"
 #include "FPSCounter.h"
 
-void dae::Minigin::Initialize()
+void engine::Minigin::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
@@ -39,32 +39,13 @@ void dae::Minigin::Initialize()
 /**
  * Code constructing the scene world starts here
  */
-void dae::Minigin::LoadGame()
+void engine::Minigin::LoadGame()
 {
 	LoadResources();
-
-	Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
-
-	std::shared_ptr<GameObject> go_Background = std::make_shared<GameObject>();
-	go_Background->AddComponent(new Texture("background"));
-	scene.Add(go_Background);
-
-	std::shared_ptr<GameObject> go_Logo = std::make_shared<GameObject>();
-	go_Logo->AddComponent(new Texture("logo"));
-	go_Logo->SetPosition(216, 180);
-	scene.Add(go_Logo);
-
-	std::shared_ptr<GameObject> go_Headline = std::make_shared<GameObject>();
-	go_Headline->AddComponent(new HudText("Programming 4 Assignment", "Lingua"));
-	go_Headline->SetPosition(80, 30);
-	scene.Add(go_Headline);
-
-	std::shared_ptr<GameObject> go_FPSCounter = std::make_shared<GameObject>();
-	go_FPSCounter->AddComponent(new FPSCounter());
-	scene.Add(go_FPSCounter);
+	
 }
 
-void dae::Minigin::LoadResources() 
+void engine::Minigin::LoadResources() 
 {
 	//loading fonts
 	ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
@@ -74,7 +55,7 @@ void dae::Minigin::LoadResources()
 	ResourceManager::GetInstance().LoadTexture("background.jpg");
 }
 
-void dae::Minigin::Cleanup()
+void engine::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(window);
@@ -82,7 +63,7 @@ void dae::Minigin::Cleanup()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run()
+void engine::Minigin::Run()
 {
 	static float msPerUpdate = 0.02f;
 

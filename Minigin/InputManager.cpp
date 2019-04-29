@@ -3,7 +3,7 @@
 #include <SDL.h>
 
 
-bool dae::InputManager::ProcessInput()
+bool engine::InputManager::ProcessInput()
 {
 	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
 	XInputGetState(0, &currentState);
@@ -24,7 +24,7 @@ bool dae::InputManager::ProcessInput()
 	return true;
 }
 
-bool dae::InputManager::IsPressed(ControllerButton button) const
+bool engine::InputManager::IsPressed(ControllerButton button) const
 {
 	switch (button)
 	{

@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-std::basic_streambuf<char>::int_type dae::DebugStreambuf::overflow(int_type c)
+std::basic_streambuf<char>::int_type engine::DebugStreambuf::overflow(int_type c)
 {
 	if (c != EOF)
 	{
@@ -13,12 +13,12 @@ std::basic_streambuf<char>::int_type dae::DebugStreambuf::overflow(int_type c)
 	return c;
 }
 
-dae::Cout2VisualStudioDebugOutput::Cout2VisualStudioDebugOutput()
+engine::Cout2VisualStudioDebugOutput::Cout2VisualStudioDebugOutput()
 {
 	default_stream = std::cout.rdbuf(&dbgstream);
 }
 
-dae::Cout2VisualStudioDebugOutput::~Cout2VisualStudioDebugOutput()
+engine::Cout2VisualStudioDebugOutput::~Cout2VisualStudioDebugOutput()
 {
 	std::cout.rdbuf(default_stream);
 }

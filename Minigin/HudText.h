@@ -5,7 +5,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-//namespace dae
+//namespace engine
 //{
 //	class Font
 //	{
@@ -29,7 +29,7 @@
 //struct TTF_Font;
 //struct SDL_Texture;
 
-namespace dae
+namespace engine
 {
 	class HudText : public BaseComponent
 	{

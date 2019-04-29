@@ -2,18 +2,18 @@
 #include "FPSCounter.h"
 #include <SDL.h>
 
-dae::FPSCounter::FPSCounter()
+engine::FPSCounter::FPSCounter()
 	: HudText("FPS", "Lingua", SDL_Color{255, 255, 0})
 	, m_Frames{ 0 }
 	, m_SecondCounter{ 0 }
 {
 }
 
-dae::FPSCounter::~FPSCounter()
+engine::FPSCounter::~FPSCounter()
 {
 }
 
-void dae::FPSCounter::Update(float deltaTime)
+void engine::FPSCounter::Update(float deltaTime)
 {
 	m_Frames++;
 	m_SecondCounter += deltaTime;
@@ -26,7 +26,7 @@ void dae::FPSCounter::Update(float deltaTime)
 	HudText::Update( deltaTime );
 }
 
-void dae::FPSCounter::Render() const
+void engine::FPSCounter::Render() const
 {
 	HudText::Render();
 }

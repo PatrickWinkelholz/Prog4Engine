@@ -1,9 +1,9 @@
 #pragma once
 #include "HudText.h"
 
-namespace dae 
+namespace engine 
 {
-	class FPSCounter : public dae::HudText
+	class FPSCounter : public engine::HudText
 	{
 	public:
 

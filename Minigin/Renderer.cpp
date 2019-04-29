@@ -4,7 +4,7 @@
 #include "SceneManager.h"
 #include "ResourceManager.h"
 
-void dae::Renderer::Init(SDL_Window * window)
+void engine::Renderer::Init(SDL_Window * window)
 {
 	mRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (mRenderer == nullptr)
@@ -13,7 +13,7 @@ void dae::Renderer::Init(SDL_Window * window)
 	}
 }
 
-void dae::Renderer::Render( float )
+void engine::Renderer::Render( float )
 {
 	SDL_RenderClear(mRenderer);
 
@@ -22,7 +22,7 @@ void dae::Renderer::Render( float )
 	SDL_RenderPresent(mRenderer);
 }
 
-void dae::Renderer::Destroy()
+void engine::Renderer::Destroy()
 {
 	if (mRenderer != nullptr)
 	{
@@ -31,7 +31,7 @@ void dae::Renderer::Destroy()
 	}
 }
 
-void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y) const
+void engine::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y) const
 {
 	SDL_Rect dst;
 	dst.x = static_cast<int>(x);
@@ -40,7 +40,7 @@ void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const flo
 	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
 }
 
-void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y, const float width, const float height) const
+void engine::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y, const float width, const float height) const
 {
 	SDL_Rect dst;
 	dst.x = static_cast<int>(x);

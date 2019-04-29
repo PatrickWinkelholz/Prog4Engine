@@ -2,7 +2,7 @@
 
 struct SDL_Window;
 
-namespace dae
+namespace engine
 {
 	class Minigin
 	{

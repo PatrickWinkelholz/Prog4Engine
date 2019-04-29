@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 
-dae::HudText::HudText(const std::string&& text, const std::string&& font, SDL_Color color) 
+engine::HudText::HudText(const std::string&& text, const std::string&& font, SDL_Color color) 
 	: m_NeedsUpdate(true)
 	, m_Text(text)
 	, m_Font(nullptr)
@@ -17,7 +17,7 @@ dae::HudText::HudText(const std::string&& text, const std::string&& font, SDL_Co
 		throw std::runtime_error(std::string("HudTextFont: Font wasn't loaded"));
 }
 
-void dae::HudText::Update( float deltaTime )
+void engine::HudText::Update( float deltaTime )
 {
 	(deltaTime); //not referenced
 	if (m_NeedsUpdate)
@@ -36,7 +36,7 @@ void dae::HudText::Update( float deltaTime )
 	}
 }
 
-void dae::HudText::Render() const
+void engine::HudText::Render() const
 {
 	if (m_Texture != nullptr)
 	{
@@ -45,13 +45,13 @@ void dae::HudText::Render() const
 	}
 }
 
-void dae::HudText::SetText(const std::string& text)
+void engine::HudText::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
 }
 
-void dae::HudText::SetColor(int r, int g, int b) 
+void engine::HudText::SetColor(int r, int g, int b) 
 {
 	m_Color = {Uint8(r), Uint8(g), Uint8(b)};
 }

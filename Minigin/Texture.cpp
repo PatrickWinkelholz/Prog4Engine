@@ -4,23 +4,23 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 
-dae::Texture::Texture(std::string&& textureName)
+engine::Texture::Texture(std::string&& textureName)
 	: m_Name{ textureName }
 {
 	m_Texture = ResourceManager::GetInstance().GetTexture(textureName);
 }
 
-dae::Texture::~Texture()
+engine::Texture::~Texture()
 {
 
 }
 
-void dae::Texture::Update( float deltaTime )
+void engine::Texture::Update( float deltaTime )
 {
 	(deltaTime); //not referenced
 }
 
-void dae::Texture::Render() const
+void engine::Texture::Render() const
 {
 	//const auto pos = mTransform.GetPosition();
 	Renderer::GetInstance().RenderTexture(m_Texture, gameObject->GetPosition().x, gameObject->GetPosition().y);

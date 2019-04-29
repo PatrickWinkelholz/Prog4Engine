@@ -1,0 +1,15 @@
+﻿  GoldDiggerPCH.cpp
+  FPSCounter.cpp
+  GameObject.cpp
+  HudText.cpp
+  InputManager.cpp
+  Log.cpp
+  GoldDigger.cpp
+  Main.cpp
+  Renderer.cpp
+  ResourceManager.cpp
+  Scene.cpp
+  SceneManager.cpp
+  Texture.cpp
+  Generating Code...
+  GoldDigger.vcxproj -> C:\Users\doodl\Documents\gitRepos\x64\Debug\GoldDigger.lib

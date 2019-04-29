@@ -2,18 +2,18 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-unsigned int dae::Scene::idCounter = 0;
+unsigned int engine::Scene::idCounter = 0;
 
-dae::Scene::Scene(const std::string& name) : mName(name) {}
+engine::Scene::Scene(const std::string& name) : mName(name) {}
 
-dae::Scene::~Scene() = default;
+engine::Scene::~Scene() = default;
 
-void dae::Scene::Add(const std::shared_ptr<SceneObject>& object)
+void engine::Scene::Add(const std::shared_ptr<SceneObject>& object)
 {
 	mObjects.push_back(object);
 }
 
-void dae::Scene::Update(float deltaTime)
+void engine::Scene::Update(float deltaTime)
 {
 	for(auto gameObject : mObjects)
 	{
@@ -21,7 +21,7 @@ void dae::Scene::Update(float deltaTime)
 	}
 }
 
-void dae::Scene::Render() const
+void engine::Scene::Render() const
 {
 	for (const auto gameObject : mObjects)
 	{

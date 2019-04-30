@@ -11,6 +11,7 @@ namespace engine
 	public:
 		Scene& CreateScene(const std::string& name);
 
+		void Initialize();
 		void Update(float deltaTime);
 		void FixedUpdate();
 		void Render();

@@ -9,6 +9,7 @@ namespace engine
 	{
 	public:
 
+		void Initialize() override;
 		void Update(float deltaTime) override;
 		void Render() const override;
 

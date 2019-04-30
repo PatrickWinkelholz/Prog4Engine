@@ -17,9 +17,13 @@ engine::HudText::HudText(const std::string&& text, const std::string&& font, SDL
 		throw std::runtime_error(std::string("HudTextFont: Font wasn't loaded"));
 }
 
-void engine::HudText::Update( float deltaTime )
+void engine::HudText::Initialize() 
 {
-	(deltaTime); //not referenced
+	
+}
+
+void engine::HudText::Update( float /*deltatime*/ )
+{
 	if (m_NeedsUpdate)
 	{
 		const auto surf = TTF_RenderText_Blended(m_Font, m_Text.c_str(), m_Color);

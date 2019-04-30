@@ -11,6 +11,7 @@ namespace engine
 		Texture(std::string&& textureName);
 		~Texture();
 
+		void Initialize() override;
 		void Update( float deltaTime ) override;
 		void Render() const override;
 	

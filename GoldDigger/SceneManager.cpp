@@ -4,9 +4,18 @@
 
 void engine::SceneManager::Update(float deltaTime)
 {
+	//TODO: have only 1 active scene at a time
 	for(auto scene : mScenes)
 	{
 		scene->Update(deltaTime);
+	}
+}
+
+void engine::SceneManager::Initialize() 
+{
+	for (auto scene : mScenes) 
+	{
+		scene->Initialize();
 	}
 }
 

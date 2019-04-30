@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include "SceneObject.h"
 
 namespace engine
 {
@@ -13,11 +12,12 @@ namespace engine
 		float z;
 	};
 
-	class GameObject final : public SceneObject
+	class GameObject final
 	{
 	public:
-		void Update( float deltaTime ) override;
-		void Render() const override;
+		void Initialize();
+		void Update( float deltaTime );
+		void Render() const;
 
 		//void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);

@@ -34,6 +34,13 @@ void engine::GoldDigger::Initialize()
 	}
 
 	Renderer::GetInstance().Init(window);
+
+	// tell the resource manager where he can find the game data
+	ResourceManager::GetInstance().Init("../Data/");
+
+	LoadGame();
+
+	SceneManager::GetInstance().Initialize();
 }
 
 /**
@@ -63,7 +70,6 @@ void engine::GoldDigger::LoadGame()
 	std::shared_ptr<GameObject> go_FPSCounter = std::make_shared<GameObject>();
 	go_FPSCounter->AddComponent(new FPSCounter());
 	scene.Add(go_FPSCounter);
-
 }
 
 void engine::GoldDigger::LoadResources() 
@@ -89,11 +95,6 @@ void engine::GoldDigger::Run()
 	static float msPerUpdate = 0.02f;
 
 	Initialize();
-
-	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
-
-	LoadGame();
 	{
 		auto t = std::chrono::high_resolution_clock::now();
 		auto& renderer = Renderer::GetInstance();

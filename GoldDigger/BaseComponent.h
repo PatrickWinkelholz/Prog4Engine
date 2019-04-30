@@ -1,15 +1,16 @@
 #pragma once
-#include "SceneObject.h"
 
 namespace engine 
 {
 	class GameObject;
 
-	class BaseComponent : public SceneObject
+	class BaseComponent
 	{
 	public:
-		virtual void Update( float deltaTime ) override = 0;
-		virtual void Render() const override = 0;
+
+		virtual void Initialize() = 0;
+		virtual void Update( float deltaTime ) = 0;
+		virtual void Render() const = 0;
 
 		BaseComponent() = default;
 		virtual ~BaseComponent() = default;

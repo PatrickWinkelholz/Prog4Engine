@@ -15,7 +15,7 @@ int main()
 {
 	engine::GoldDigger d{};
 	
-	//d.Run();  <-- this line causes linker errors
+	//d.Run();  //<-- this line causes linker errors
 
 	return 0;
 }

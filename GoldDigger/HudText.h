@@ -1,5 +1,4 @@
 #pragma once
-#include "SceneObject.h"
 #include "BaseComponent.h"
 #include <string>
 #include <SDL.h>
@@ -10,6 +9,7 @@ namespace engine
 	class HudText : public BaseComponent
 	{
 	public:
+		void Initialize() override;
 		void Update( float deltaTime ) override;
 		void Render() const override;
 

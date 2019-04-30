@@ -19,6 +19,14 @@ engine::GameObject::~GameObject()
 	}
 };
 
+void engine::GameObject::Initialize() 
+{
+	for (BaseComponent* c : m_Components) 
+	{
+		c->Initialize();
+	}
+}
+
 void engine::GameObject::Update( float deltaTime )
 {
 	for (BaseComponent* c : m_Components) 
@@ -39,8 +47,8 @@ void engine::GameObject::Render() const
 
 void engine::GameObject::AddComponent(BaseComponent* component) 
 {
-	m_Components.push_back(component);
 	component->gameObject = this;
+	m_Components.push_back(component);
 }
 
 //void engine::GameObject::SetTexture(const std::string& filename)

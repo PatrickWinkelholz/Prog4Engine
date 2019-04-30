@@ -7,7 +7,7 @@
 engine::Texture::Texture(std::string&& textureName)
 	: m_Name{ textureName }
 {
-	m_Texture = ResourceManager::GetInstance().GetTexture(textureName);
+
 }
 
 engine::Texture::~Texture()
@@ -15,9 +15,14 @@ engine::Texture::~Texture()
 
 }
 
-void engine::Texture::Update( float deltaTime )
+void engine::Texture::Initialize() 
 {
-	(deltaTime); //not referenced
+	m_Texture = ResourceManager::GetInstance().GetTexture(m_Name);
+}
+
+void engine::Texture::Update( float /*deltaTime*/ )
+{
+
 }
 
 void engine::Texture::Render() const

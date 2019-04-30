@@ -2,17 +2,24 @@
 #include "FPSCounter.h"
 #include "HudText.h"
 #include <SDL.h>
+#include "GameObject.h"
 
 engine::FPSCounter::FPSCounter()
 	: m_Frames{ 0 }
 	, m_SecondCounter{ 0 }
 {
-	m_HudText = new HudText("FPS", "Lingua", SDL_Color{ 255, 255, 0 });
 }
 
 engine::FPSCounter::~FPSCounter()
 {
-	delete m_HudText;
+
+}
+
+void engine::FPSCounter::Initialize() 
+{
+	m_HudText = new HudText("FPS", "Lingua", SDL_Color{ 255, 255, 0 });
+	gameObject->AddComponent(m_HudText);
+	m_HudText->Initialize();
 }
 
 void engine::FPSCounter::Update(float deltaTime)
@@ -25,10 +32,8 @@ void engine::FPSCounter::Update(float deltaTime)
 		m_SecondCounter = 0;
 		m_Frames = 0;
 	}
-	m_HudText->Update( deltaTime );
 }
 
 void engine::FPSCounter::Render() const
 {
-	m_HudText->Render();
 }

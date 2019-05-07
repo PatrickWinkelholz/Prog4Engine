@@ -1,5 +1,5 @@
 #pragma once
-namespace engine
+namespace GD
 {
 	template <typename T>
 	class Singleton

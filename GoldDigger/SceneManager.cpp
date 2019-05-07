@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void engine::SceneManager::Update(float deltaTime)
+void GD::SceneManager::Update(float deltaTime)
 {
 	//TODO: have only 1 active scene at a time
 	for(auto scene : mScenes)
@@ -11,7 +11,7 @@ void engine::SceneManager::Update(float deltaTime)
 	}
 }
 
-void engine::SceneManager::Initialize() 
+void GD::SceneManager::Initialize() 
 {
 	for (auto scene : mScenes) 
 	{
@@ -19,12 +19,12 @@ void engine::SceneManager::Initialize()
 	}
 }
 
-void engine::SceneManager::FixedUpdate() 
+void GD::SceneManager::FixedUpdate() 
 {
 	
 }
 
-void engine::SceneManager::Render()
+void GD::SceneManager::Render()
 {
 	//only one scene should render
 	for (const auto scene : mScenes)
@@ -33,7 +33,7 @@ void engine::SceneManager::Render()
 	}
 }
 
-engine::Scene& engine::SceneManager::CreateScene(const std::string& name)
+GD::Scene& GD::SceneManager::CreateScene(const std::string& name)
 {
 	const auto scene = std::shared_ptr<Scene>(new Scene(name));
 	mScenes.push_back(scene);

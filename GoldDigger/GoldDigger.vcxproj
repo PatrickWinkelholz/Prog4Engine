@@ -159,12 +159,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="FPSCounter.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GoldDiggerGame.h" />
     <ClInclude Include="HudText.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="Locator.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="GoldDigger.h" />
     <ClInclude Include="GoldDiggerPCH.h" />
@@ -177,10 +181,12 @@
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="FPSCounter.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HudText.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Locator.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="GoldDigger.cpp" />
     <ClCompile Include="GoldDiggerPCH.cpp">

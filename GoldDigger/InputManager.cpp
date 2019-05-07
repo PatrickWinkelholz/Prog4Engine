@@ -1,42 +1,60 @@
 #include "GoldDiggerPCH.h"
 #include "InputManager.h"
-#include <SDL.h>
+#include "Command.h"
 
-
-bool engine::InputManager::ProcessInput()
+GD::InputManager::InputManager() 
+	: m_CurrentState{ new XINPUT_STATE() }
+	, m_LastState{ new XINPUT_STATE() }
 {
-	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
-	XInputGetState(0, &currentState);
+	
+}
 
-	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_QUIT) {
-			return false;
-		}
-		if (e.type == SDL_KEYDOWN) {
-			
-		}
-		if (e.type == SDL_MOUSEBUTTONDOWN) {
-			
-		}
+GD::InputManager::~InputManager() 
+{
+	if (m_CurrentState)
+		delete m_CurrentState;
+	if (m_LastState)
+		delete m_LastState;
+
+	for (auto pair : m_Commands) 
+	{
+		if (pair.second)
+			delete pair.second;
+	}
+}
+
+void GD::InputManager::AssignCommand(ControllerButton button, Command* command) 
+{
+	m_Commands[button] = command;
+}
+
+bool GD::InputManager::ProcessInput()
+{
+	(*m_LastState) = *(m_CurrentState);
+	XInputGetState(0, m_CurrentState);
+
+	for (auto pair : m_Commands) 
+	{
+		if (IsPressed(pair.first)) 
+			pair.second->execute();
 	}
 
 	return true;
 }
 
-bool engine::InputManager::IsPressed(ControllerButton button) const
+bool GD::InputManager::IsPressed(ControllerButton button) const
 {
-	switch (button)
-	{
-	case ControllerButton::ButtonA:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-	case ControllerButton::ButtonB:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_B;
-	case ControllerButton::ButtonX:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
-	case ControllerButton::ButtonY:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
-	default: return false;
-	}
+	return (m_CurrentState->Gamepad.wButtons & (DWORD)button) 
+		&& !(m_LastState->Gamepad.wButtons & (DWORD)button);
 }
 
+bool GD::InputManager::IsDown(ControllerButton button) const
+{
+	return m_CurrentState->Gamepad.wButtons & (DWORD)button;
+}
+
+bool GD::InputManager::IsReleased(ControllerButton button) const
+{
+	return (!m_CurrentState->Gamepad.wButtons & (DWORD)button)
+		&& (m_LastState->Gamepad.wButtons & (DWORD)button);
+}

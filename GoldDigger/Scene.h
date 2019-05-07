@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "GameObject.h"
 
-namespace engine
+namespace GD
 {
 	class Scene
 	{

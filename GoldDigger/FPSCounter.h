@@ -2,7 +2,7 @@
 #include "BaseComponent.h"
 //#include "HudText.h"
 
-namespace engine 
+namespace GD
 {
 	class HudText;
 	class FPSCounter : public BaseComponent

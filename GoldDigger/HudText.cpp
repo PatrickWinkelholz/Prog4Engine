@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 
-engine::HudText::HudText(const std::string&& text, const std::string&& font, SDL_Color color) 
+GD::HudText::HudText(const std::string&& text, const std::string&& font, SDL_Color color) 
 	: m_NeedsUpdate(true)
 	, m_Text(text)
 	, m_Font(nullptr)
@@ -17,12 +17,12 @@ engine::HudText::HudText(const std::string&& text, const std::string&& font, SDL
 		throw std::runtime_error(std::string("HudTextFont: Font wasn't loaded"));
 }
 
-void engine::HudText::Initialize() 
+void GD::HudText::Initialize() 
 {
 	
 }
 
-void engine::HudText::Update( float /*deltatime*/ )
+void GD::HudText::Update( float /*deltatime*/ )
 {
 	if (m_NeedsUpdate)
 	{
@@ -40,7 +40,7 @@ void engine::HudText::Update( float /*deltatime*/ )
 	}
 }
 
-void engine::HudText::Render() const
+void GD::HudText::Render() const
 {
 	if (m_Texture != nullptr)
 	{
@@ -49,13 +49,13 @@ void engine::HudText::Render() const
 	}
 }
 
-void engine::HudText::SetText(const std::string& text)
+void GD::HudText::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
 }
 
-void engine::HudText::SetColor(int r, int g, int b) 
+void GD::HudText::SetColor(int r, int g, int b) 
 {
 	m_Color = {Uint8(r), Uint8(g), Uint8(b)};
 }

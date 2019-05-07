@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-namespace engine
+namespace GD
 {
 	class HudText : public BaseComponent
 	{

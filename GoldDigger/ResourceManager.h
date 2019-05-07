@@ -5,7 +5,7 @@
 
 struct SDL_Texture;
 
-namespace engine
+namespace GD
 {
 	/*struct Font
 	{

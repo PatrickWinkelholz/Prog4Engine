@@ -6,7 +6,7 @@ struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Texture;
 
-namespace engine
+namespace GD
 {
 	class Renderer final : public Singleton<Renderer>
 	{

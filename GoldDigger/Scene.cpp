@@ -2,17 +2,17 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-unsigned int engine::Scene::idCounter = 0;
+unsigned int GD::Scene::idCounter = 0;
 
-engine::Scene::Scene(const std::string& name) : mName(name) {}
-engine::Scene::~Scene() = default;
+GD::Scene::Scene(const std::string& name) : mName(name) {}
+GD::Scene::~Scene() = default;
 
-void engine::Scene::Add(const std::shared_ptr<GameObject>& object)
+void GD::Scene::Add(const std::shared_ptr<GameObject>& object)
 {
 	m_Objects.push_back(object);
 }
 
-void engine::Scene::Initialize() 
+void GD::Scene::Initialize() 
 {
 	for (auto gameObject : m_Objects) 
 	{
@@ -20,7 +20,7 @@ void engine::Scene::Initialize()
 	}
 }
 
-void engine::Scene::Update(float deltaTime)
+void GD::Scene::Update(float deltaTime)
 {
 	for(auto gameObject : m_Objects)
 	{
@@ -28,7 +28,7 @@ void engine::Scene::Update(float deltaTime)
 	}
 }
 
-void engine::Scene::Render() const
+void GD::Scene::Render() const
 {
 	for (const auto gameObject : m_Objects)
 	{

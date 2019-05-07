@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace engine
+namespace GD
 {
 	class Scene;
 	class SceneManager final : public Singleton<SceneManager>

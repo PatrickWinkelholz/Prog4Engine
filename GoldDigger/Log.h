@@ -1,7 +1,7 @@
 #pragma once
 #include <streambuf>
 
-namespace engine
+namespace GD
 {
 	class DebugStreambuf : public std::streambuf 
 	{

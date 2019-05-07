@@ -1,15 +1,2 @@
-﻿  GoldDiggerPCH.cpp
-  FPSCounter.cpp
-  GameObject.cpp
-  HudText.cpp
-  InputManager.cpp
-  Log.cpp
-  GoldDigger.cpp
-  Main.cpp
-  Renderer.cpp
-  ResourceManager.cpp
-  Scene.cpp
-  SceneManager.cpp
-  Texture.cpp
-  Generating Code...
+﻿  InputManager.cpp
   GoldDigger.vcxproj -> C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\x64\Debug\GoldDigger.lib

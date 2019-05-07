@@ -4,14 +4,14 @@
 #include "Renderer.h"
 #include "BaseComponent.h"
 
-engine::GameObject::GameObject() 
+GD::GameObject::GameObject() 
 	: m_Components{ }
 	, m_Transform{ 0, 0, 0}
 {
 
 }
 
-engine::GameObject::~GameObject() 
+GD::GameObject::~GameObject() 
 {
 	for (BaseComponent* c : m_Components) 
 	{
@@ -19,7 +19,7 @@ engine::GameObject::~GameObject()
 	}
 };
 
-void engine::GameObject::Initialize() 
+void GD::GameObject::Initialize() 
 {
 	for (BaseComponent* c : m_Components) 
 	{
@@ -27,7 +27,7 @@ void engine::GameObject::Initialize()
 	}
 }
 
-void engine::GameObject::Update( float deltaTime )
+void GD::GameObject::Update( float deltaTime )
 {
 	for (BaseComponent* c : m_Components) 
 	{
@@ -35,7 +35,7 @@ void engine::GameObject::Update( float deltaTime )
 	}
 }
 
-void engine::GameObject::Render() const
+void GD::GameObject::Render() const
 {
 	for (BaseComponent* c : m_Components) 
 	{
@@ -45,24 +45,24 @@ void engine::GameObject::Render() const
 	//Renderer::GetInstance().RenderTexture(*mTexture, pos.x, pos.y);
 }
 
-void engine::GameObject::AddComponent(BaseComponent* component) 
+void GD::GameObject::AddComponent(BaseComponent* component) 
 {
 	component->gameObject = this;
 	m_Components.push_back(component);
 }
 
-//void engine::GameObject::SetTexture(const std::string& filename)
+//void GD::GameObject::SetTexture(const std::string& filename)
 //{
 //	mTexture = ResourceManager::GetInstance().LoadTexture(filename);
 //}
 
-void engine::GameObject::SetPosition(float x, float y)
+void GD::GameObject::SetPosition(float x, float y)
 {
 	m_Transform.x = x;
 	m_Transform.y = y;
 }
 
-const engine::Transform& engine::GameObject::GetPosition() const
+const GD::Transform& GD::GameObject::GetPosition() const
 {
 	return m_Transform;
 }

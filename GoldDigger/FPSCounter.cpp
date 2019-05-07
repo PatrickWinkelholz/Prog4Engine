@@ -4,25 +4,25 @@
 #include <SDL.h>
 #include "GameObject.h"
 
-engine::FPSCounter::FPSCounter()
+GD::FPSCounter::FPSCounter()
 	: m_Frames{ 0 }
 	, m_SecondCounter{ 0 }
 {
 }
 
-engine::FPSCounter::~FPSCounter()
+GD::FPSCounter::~FPSCounter()
 {
 
 }
 
-void engine::FPSCounter::Initialize() 
+void GD::FPSCounter::Initialize() 
 {
 	m_HudText = new HudText("FPS", "Lingua", SDL_Color{ 255, 255, 0 });
 	gameObject->AddComponent(m_HudText);
 	m_HudText->Initialize();
 }
 
-void engine::FPSCounter::Update(float deltaTime)
+void GD::FPSCounter::Update(float deltaTime)
 {
 	m_Frames++;
 	m_SecondCounter += deltaTime;
@@ -34,6 +34,6 @@ void engine::FPSCounter::Update(float deltaTime)
 	}
 }
 
-void engine::FPSCounter::Render() const
+void GD::FPSCounter::Render() const
 {
 }

@@ -3,7 +3,7 @@
 
 struct SDL_Texture;
 
-namespace engine 
+namespace GD 
 {
 	class Texture : public BaseComponent
 	{

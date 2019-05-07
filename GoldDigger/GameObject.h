@@ -1,7 +1,8 @@
 #pragma once
 #include <memory>
+#include <vector>
 
-namespace engine
+namespace GD
 {
 	class BaseComponent;
 

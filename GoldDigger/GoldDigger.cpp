@@ -12,13 +12,17 @@
 #include "Scene.h"
 #include "HudText.h"
 #include "FPSCounter.h"
+#include "GoldDiggerGame.h"
 
-void engine::GoldDigger::Initialize()
+void GD::GoldDigger::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
+
+	if (!m_Game)
+		throw std::exception{"GoldDigger initialization error, game not set!"};
 
 	window = SDL_CreateWindow(
 		"Programming 4 assignment",
@@ -38,51 +42,13 @@ void engine::GoldDigger::Initialize()
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 
-	LoadGame();
+	m_Game->LoadResources();
+	m_Game->LoadGame();
 
 	SceneManager::GetInstance().Initialize();
 }
 
-/**
- * Code constructing the scene world starts here
- */
-void engine::GoldDigger::LoadGame()
-{
-	LoadResources();
-	
-	const std::string sceneName{ "test" };
-	Scene& scene = SceneManager::GetInstance().CreateScene(sceneName);
-
-	std::shared_ptr<GameObject> go_Background = std::make_shared<GameObject>();
-	go_Background->AddComponent(new Texture("background"));
-	scene.Add(go_Background);
-
-	std::shared_ptr<GameObject> go_Logo = std::make_shared<GameObject>();
-	go_Logo->AddComponent(new Texture("logo"));
-	go_Logo->SetPosition(216, 180);
-	scene.Add(go_Logo);
-
-	std::shared_ptr<GameObject> go_Headline = std::make_shared<GameObject>();
-	go_Headline->AddComponent(new HudText("Programming 4 Assignment", "Lingua"));
-	go_Headline->SetPosition(80, 30);
-	scene.Add(go_Headline);
-
-	std::shared_ptr<GameObject> go_FPSCounter = std::make_shared<GameObject>();
-	go_FPSCounter->AddComponent(new FPSCounter());
-	scene.Add(go_FPSCounter);
-}
-
-void engine::GoldDigger::LoadResources() 
-{
-	//loading fonts
-	ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-
-	//loading textures
-	ResourceManager::GetInstance().LoadTexture("logo.png");
-	ResourceManager::GetInstance().LoadTexture("background.jpg");
-}
-
-void engine::GoldDigger::Cleanup()
+void GD::GoldDigger::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(window);
@@ -90,7 +56,12 @@ void engine::GoldDigger::Cleanup()
 	SDL_Quit();
 }
 
-void engine::GoldDigger::Run()
+void GD::GoldDigger::SetGame(GoldDiggerGame* game)
+{
+	m_Game = game;
+}
+
+void GD::GoldDigger::Run()
 {
 	static float msPerUpdate = 0.02f;
 

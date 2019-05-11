@@ -5,12 +5,13 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 
-GD::HudText::HudText(const std::string&& text, const std::string&& font, SDL_Color color) 
-	: m_NeedsUpdate(true)
-	, m_Text(text)
-	, m_Font(nullptr)
-	, m_Texture(nullptr)
-	, m_Color(color)
+GD::HudText::HudText(const std::string&& text, const std::string&& font, GD::RenderMode mode, SDL_Color color)
+	: m_NeedsUpdate{ true }
+	, m_Text{ text }
+	, m_Font{ nullptr }
+	, m_Texture{ nullptr }
+	, m_Color{ color }
+	, m_Mode{ mode }
 { 
 	m_Font = ResourceManager::GetInstance().GetFont(font);
 	if ( m_Font == nullptr ) 
@@ -44,8 +45,8 @@ void GD::HudText::Render() const
 {
 	if (m_Texture != nullptr)
 	{
-		const auto pos = gameObject->GetPosition();
-		Renderer::GetInstance().RenderTexture(m_Texture, pos.x, pos.y);
+		const Transform transform = m_GameObject->GetTransform();
+		Renderer::GetInstance().RenderTexture(m_Texture, transform, m_Mode);
 	}
 }
 

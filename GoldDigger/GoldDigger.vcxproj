@@ -162,6 +162,7 @@
     <ClInclude Include="Audio.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Components.h" />
     <ClInclude Include="FPSCounter.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GoldDiggerGame.h" />
@@ -169,14 +170,15 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Locator.h" />
-    <ClInclude Include="Log.h" />
     <ClInclude Include="GoldDigger.h" />
     <ClInclude Include="GoldDiggerPCH.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
@@ -187,7 +189,6 @@
     <ClCompile Include="HudText.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Locator.cpp" />
-    <ClCompile Include="Log.cpp" />
     <ClCompile Include="GoldDigger.cpp" />
     <ClCompile Include="GoldDiggerPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -195,7 +196,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

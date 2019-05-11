@@ -32,9 +32,6 @@
     <ClInclude Include="json.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -68,15 +65,27 @@
     <ClInclude Include="GoldDiggerGame.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Audio.h" />
-    <ClInclude Include="Command.h" />
-    <ClInclude Include="Locator.h" />
+    <ClInclude Include="Structs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
@@ -89,9 +98,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GoldDigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FPSCounter.cpp">

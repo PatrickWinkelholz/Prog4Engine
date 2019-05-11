@@ -12,6 +12,10 @@ public:
 	DigDug& operator=(DigDug&) = delete;
 	DigDug&& operator=(DigDug&&) = delete;
 
-	void LoadGame() override;
-	void LoadResources() override;
+	void Initialize() override;
+
+private:
+
+	void LoadResources();
+	void LoadScenes();
 };

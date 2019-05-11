@@ -6,7 +6,7 @@
 
 GD::GameObject::GameObject() 
 	: m_Components{ }
-	, m_Transform{ 0, 0, 0}
+	, m_Transform{ {0, 0}, {1.f, 1.f}, 0 }
 {
 
 }
@@ -47,22 +47,48 @@ void GD::GameObject::Render() const
 
 void GD::GameObject::AddComponent(BaseComponent* component) 
 {
-	component->gameObject = this;
+	component->m_GameObject = this;
 	m_Components.push_back(component);
 }
 
-//void GD::GameObject::SetTexture(const std::string& filename)
-//{
-//	mTexture = ResourceManager::GetInstance().LoadTexture(filename);
-//}
-
 void GD::GameObject::SetPosition(float x, float y)
 {
-	m_Transform.x = x;
-	m_Transform.y = y;
+	m_Transform.pos.x = x;
+	m_Transform.pos.y = y;
 }
 
-const GD::Transform& GD::GameObject::GetPosition() const
+void GD::GameObject::SetScale(float x, float y)
+{
+	m_Transform.scale.x = x;
+	m_Transform.scale.y = y;
+}
+
+void GD::GameObject::SetPosition( const GD::Vector2& pos ) 
+{
+	m_Transform.pos = pos;
+}
+
+void GD::GameObject::SetScale(const GD::Vector2& scale) 
+{
+	m_Transform.scale = scale;
+}
+
+void GD::GameObject::SetTransform(const Transform& transform)
+{
+	m_Transform = transform;
+}
+
+const GD::Transform & GD::GameObject::GetTransform() const
 {
 	return m_Transform;
+}
+
+const GD::Vector2& GD::GameObject::GetPosition() const
+{
+	return m_Transform.pos;
+}
+
+const GD::Vector2& GD::GameObject::GetScale() const
+{
+	return m_Transform.scale;
 }

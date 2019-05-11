@@ -1,81 +1,23 @@
 #pragma once
-#include "Locator.h"
-#include <iostream>
-#include <deque>
 
-class Command
+namespace GD 
 {
-public:
-	virtual void execute() = 0; //pure virtual function = abstract class
-	virtual ~Command() = default;
-};
+	class GameObject;
 
-class Fire : public Command
-{
-public:
-	void execute() override { Locator::getAudio().playSound(L"fire.wav"); };
-	~Fire() {};
-};
-
-class Duck : public Command
-{
-public:
-	void execute() override { Locator::getAudio().playSound(L"duck.wav"); };
-	~Duck() {};
-};
-
-class Jump : public Command
-{
-public:
-	void execute() override { Locator::getAudio().playSound(L"jump.wav"); };
-	~Jump() {};
-};
-
-class Fart : public Command
-{
-public:
-	void execute() override { Locator::getAudio().playSound(L"fart.wav"); };
-	~Fart() {};
-};
-
-class SwitchAudio : public Command //used to cycle between audio services. can store any number of services and cycles between them
-{
-public:
-	SwitchAudio(std::deque<Audio*>* services) { 
-		m_Services = services; 
-		execute();
-	}
-
-	void execute() override 
+	class Command
 	{
-		Locator::provide(m_Services->front());
-		m_Services->push_back(m_Services->front());
-		m_Services->pop_front();
-		std::cout << "Audio switched!\n";
+	public:
+		Command() = default;
+		virtual ~Command() = default;
+
+		virtual void Execute( GameObject& gameObject ) = 0;
+		void SetData(float* data) { m_InputData = data; };
+
+	protected:
+		//TODO: change this to void* or find a better solution
+		float* m_InputData;
 	};
+}
 
-	~SwitchAudio() {};
 
-private:
-	std::deque<Audio*>* m_Services;
-};
-
-class Quit : public Command
-{
-public:
-	Quit(bool& quit) { m_Quit = &quit; };
-	void execute() override { *m_Quit = true; };
-	~Quit() {};
-
-private:
-	bool* m_Quit;
-};
-
-class TestCommand : public Command
-{
-public: 
-	int testNumber{};
-	void execute() override { testNumber++; };
-	~TestCommand() {};
-};
 

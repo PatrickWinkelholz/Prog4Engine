@@ -10,11 +10,9 @@
 
 int main()
 {
-	DigDug* digDug{new DigDug()};
-	GD::GoldDigger d{};
-	
-	d.SetGame(digDug);
-	d.Run();
+	DigDug* digDug{ new DigDug() };
+	GD::GoldDigger goldDigger{ digDug };
+	goldDigger.Run();
 
 	delete digDug;
 

@@ -14,6 +14,10 @@
 #include "FPSCounter.h"
 #include "GoldDiggerGame.h"
 
+GD::GoldDigger::GoldDigger(GoldDiggerGame* game)
+	: m_Game{ game }
+{}
+
 void GD::GoldDigger::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
@@ -28,22 +32,19 @@ void GD::GoldDigger::Initialize()
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		640,
-		480,
+		int(m_Game->m_Dimensions.x * m_Game->m_GameScale),
+		int(m_Game->m_Dimensions.y * m_Game->m_GameScale),
 		SDL_WINDOW_OPENGL
 	);
+
 	if (window == nullptr) 
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	Renderer::GetInstance().Init(window);
+	Renderer::GetInstance().Init(window, m_Game->m_GameScale);
 
-	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
-
-	m_Game->LoadResources();
-	m_Game->LoadGame();
+	m_Game->Initialize();
 
 	SceneManager::GetInstance().Initialize();
 }
@@ -56,15 +57,8 @@ void GD::GoldDigger::Cleanup()
 	SDL_Quit();
 }
 
-void GD::GoldDigger::SetGame(GoldDiggerGame* game)
-{
-	m_Game = game;
-}
-
 void GD::GoldDigger::Run()
 {
-	static float msPerUpdate = 0.02f;
-
 	Initialize();
 	{
 		auto t = std::chrono::high_resolution_clock::now();
@@ -82,15 +76,14 @@ void GD::GoldDigger::Run()
 			lastTime = currentTime;
 			lag += deltaTime;
 			doContinue = input.ProcessInput();
-			while (lag >= msPerUpdate) 
+			while (lag >= m_Game->m_MsPerUpdate) 
 			{
 				sceneManager.FixedUpdate();
-				lag -= msPerUpdate;
+				lag -= m_Game->m_MsPerUpdate;
 			}
 			sceneManager.Update( deltaTime );
-			renderer.Render(lag / msPerUpdate);
-
-			t += std::chrono::milliseconds(msPerFrame);
+			renderer.Render(lag / m_Game->m_MsPerUpdate);
+			t += std::chrono::milliseconds(m_Game->m_MsPerFrame);
 			std::this_thread::sleep_until(t);
 		}
 	}

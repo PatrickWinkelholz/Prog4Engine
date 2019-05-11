@@ -13,7 +13,7 @@ namespace GD
 		void Update(float deltaTime) override;
 		void Render() const override;
 
-		FPSCounter();
+		FPSCounter( std::string&& fontName );
 		~FPSCounter();
 		FPSCounter(const FPSCounter& other) = delete;
 		FPSCounter(FPSCounter&& other) = delete;
@@ -24,6 +24,7 @@ namespace GD
 		int m_Frames;
 		float m_SecondCounter;
 		HudText* m_HudText;
+		std::string m_FontName;
 	};
 }
 

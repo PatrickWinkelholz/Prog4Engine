@@ -4,16 +4,12 @@
 
 void GD::SceneManager::Update(float deltaTime)
 {
-	//TODO: have only 1 active scene at a time
-	for(auto scene : mScenes)
-	{
-		scene->Update(deltaTime);
-	}
+	m_ActiveScene->Update( deltaTime );
 }
 
 void GD::SceneManager::Initialize() 
 {
-	for (auto scene : mScenes) 
+	for (auto scene : m_Scenes) 
 	{
 		scene->Initialize();
 	}
@@ -26,16 +22,22 @@ void GD::SceneManager::FixedUpdate()
 
 void GD::SceneManager::Render()
 {
-	//only one scene should render
-	for (const auto scene : mScenes)
-	{
-		scene->Render();
-	}
+	m_ActiveScene->Render();
 }
 
 GD::Scene& GD::SceneManager::CreateScene(const std::string& name)
 {
+	return CreateScene(name.c_str());
+}
+
+GD::Scene& GD::SceneManager::CreateScene(const std::string&& name)
+{
 	const auto scene = std::shared_ptr<Scene>(new Scene(name));
-	mScenes.push_back(scene);
+	m_Scenes.push_back(scene);
 	return *scene;
+}
+
+void GD::SceneManager::SetActiveScene( GD::Scene& scene ) 
+{
+	m_ActiveScene = &scene;
 }

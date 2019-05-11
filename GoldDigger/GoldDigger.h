@@ -1,4 +1,5 @@
 #pragma once
+#include "Structs.h"
 
 struct SDL_Window;
 
@@ -7,14 +8,22 @@ namespace GD
 	class GoldDiggerGame;
 	class GoldDigger
 	{
-		const int msPerFrame = 16; //16 for 60 fps, 33 for 30 fps
+	private:
+
 		SDL_Window* window{};
-	public:
+		GoldDiggerGame* m_Game;
+
 		void Initialize();
 		void Cleanup();
-		void Run();
-		void SetGame(GoldDiggerGame* game);
 
-		GoldDiggerGame* m_Game;
+	public:
+		GoldDigger(GoldDiggerGame* game);
+		~GoldDigger() = default;
+		GoldDigger( GoldDigger& ) = delete;
+		GoldDigger( GoldDigger&& ) = delete;
+		GoldDigger& operator=( GoldDigger& ) = delete;
+		GoldDigger& operator=( GoldDigger&& ) = delete;
+
+		void Run();
 	};
 }

@@ -3,6 +3,7 @@
 #include <string>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "Structs.h"
 
 namespace GD
 {
@@ -16,7 +17,9 @@ namespace GD
 		void SetText(const std::string& text);
 		void SetColor(int r, int g, int b);
 
-		explicit HudText(const std::string&& text, const std::string&& font, SDL_Color color = {255, 255, 255});
+		HudText(const std::string&& text, const std::string&& font, 
+			GD::RenderMode mode = GD::RenderMode::corner, SDL_Color color = {255, 255, 255});
+
 		~HudText() = default;
 		HudText(const HudText& other) = delete;
 		HudText(HudText&& other) = delete;
@@ -30,5 +33,6 @@ namespace GD
 		TTF_Font* m_Font;
 		SDL_Texture* m_Texture;
 		SDL_Color m_Color;
+		RenderMode m_Mode;
 	};
 }

@@ -1,17 +1,11 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include "Structs.h"
 
 namespace GD
 {
 	class BaseComponent;
-
-	struct Transform 
-	{
-		float x;
-		float y;
-		float z;
-	};
 
 	class GameObject final
 	{
@@ -20,9 +14,15 @@ namespace GD
 		void Update( float deltaTime );
 		void Render() const;
 
-		//void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
-		const Transform& GetPosition() const;
+		void SetScale(float x, float y);
+		void SetPosition(const Vector2& position);
+		void SetScale(const Vector2& scale);
+		void SetTransform(const Transform& transform);
+		const Transform& GetTransform() const;
+		const Vector2& GetPosition() const;
+		const Vector2& GetScale() const;
+
 		void AddComponent(BaseComponent* component);
 
 		GameObject();
@@ -35,6 +35,5 @@ namespace GD
 	protected:
 		std::vector<BaseComponent*> m_Components;
 		Transform m_Transform;
-		//std::shared_ptr<Texture2D> mTexture;
 	};
 }

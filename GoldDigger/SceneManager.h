@@ -10,14 +10,17 @@ namespace GD
 	{
 	public:
 		Scene& CreateScene(const std::string& name);
+		Scene& CreateScene(const std::string&& name);
 
 		void Initialize();
 		void Update(float deltaTime);
+		void SetActiveScene(GD::Scene& scene);
 		void FixedUpdate();
 		void Render();
 
 	private:
-		std::vector<std::shared_ptr<Scene>> mScenes;
+		std::vector<std::shared_ptr<Scene>> m_Scenes;
+		GD::Scene* m_ActiveScene;
 	};
 
 }

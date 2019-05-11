@@ -10,7 +10,7 @@ namespace GD
 
 		virtual void Initialize() = 0;
 		virtual void Update( float deltaTime ) = 0;
-		virtual void Render() const = 0;
+		virtual void Render() const {};
 
 		BaseComponent() = default;
 		virtual ~BaseComponent() = default;
@@ -18,8 +18,8 @@ namespace GD
 		BaseComponent(BaseComponent&& other) = delete;
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) = delete;
-		
-		GameObject* gameObject{ nullptr };
+	
+		GameObject* m_GameObject{ nullptr };
 	};
 }
 

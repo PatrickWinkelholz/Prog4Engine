@@ -1,8 +1,5 @@
 #pragma once
 #include <map>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <xinput.h>
 #include "Singleton.h"
 #include "Structs.h"
 
@@ -19,54 +16,6 @@
 
 namespace GD
 {
-	enum class ControllerButton
-	{
-		DPadUp = XINPUT_GAMEPAD_DPAD_UP,
-		DPadDown = XINPUT_GAMEPAD_DPAD_DOWN,
-		DPadLeft = XINPUT_GAMEPAD_DPAD_LEFT,
-		DPadRight = XINPUT_GAMEPAD_DPAD_RIGHT,
-		Start = XINPUT_GAMEPAD_START,
-		Back = XINPUT_GAMEPAD_BACK,
-		LeftStick = XINPUT_GAMEPAD_LEFT_THUMB,
-		RightStick = XINPUT_GAMEPAD_RIGHT_THUMB,
-		LeftBumper = XINPUT_GAMEPAD_LEFT_SHOULDER,
-		RightBumper = XINPUT_GAMEPAD_RIGHT_SHOULDER,
-		A = XINPUT_GAMEPAD_A,
-		B = XINPUT_GAMEPAD_B,
-		X = XINPUT_GAMEPAD_X,
-		Y = XINPUT_GAMEPAD_Y
-	};
-
-	//tells the inputmanager which SDL_SCANCODE key should be associated with each XBox
-	//controller button
-	struct KeyboardMap
-	{
-		WORD DPadUp = 0;
-		WORD DPadDown = 0;
-		WORD DPadLeft = 0;
-		WORD DPadRight = 0;
-		WORD Start = 0;
-		WORD Back = 0;
-		WORD LeftStick = 0;
-		WORD RightStick = 0;
-		WORD LeftBumper = 0;
-		WORD RightBumper = 0;
-		WORD A = 0;
-		WORD B = 0;
-		WORD X = 0;
-		WORD Y = 0;
-		WORD LeftStickLeft = 0;
-		WORD LeftStickRight = 0;
-		WORD LeftStickUp = 0;
-		WORD LeftStickDown = 0;
-		WORD RightStickLeft = 0;
-		WORD RightStickRight = 0;
-		WORD RightStickUp = 0;
-		WORD RightStickDown = 0;
-		WORD LeftTrigger = 0;
-		WORD RightTrigger = 0;
-	};
-
 	class InputManager : public Singleton<InputManager>
 	{
 	public:
@@ -86,8 +35,6 @@ namespace GD
 		//TODO: implement this. no hot plug support atm
 		//int UpdateConnectedControllers() const;
 
-		//void AssignCommand(ControllerButton button, Command* command);
-
 	private:
 		// helper function to translate SDL keyboard input to XINPUT controller input
 		void GetKeyboardState( XINPUT_STATE& state, const KeyboardMap& map ) const;
@@ -100,6 +47,5 @@ namespace GD
 		
 		KeyboardMap m_KeyboardMap;
 		int m_ConnectedControllers;
-		//std::map<ControllerButton, Command*> m_Commands;
 	};
 }

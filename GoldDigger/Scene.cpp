@@ -2,14 +2,19 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-unsigned int GD::Scene::idCounter = 0;
-
-GD::Scene::Scene(const std::string& name) : mName(name) {}
-GD::Scene::~Scene() = default;
-
-void GD::Scene::Add(const std::shared_ptr<GameObject>& object)
+GD::Scene::~Scene() 
 {
+	for (auto gameObject : m_Objects) 
+	{
+		delete gameObject;
+	}
+};
+
+GD::GameObject* GD::Scene::CreateGameObject()
+{
+	GameObject* object = new GameObject();
 	m_Objects.push_back(object);
+	return object;
 }
 
 void GD::Scene::Initialize() 

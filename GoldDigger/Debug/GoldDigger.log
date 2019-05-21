@@ -1,0 +1,28 @@
+﻿  GoldDiggerPCH.cpp
+  Audio.cpp
+  FPSCounter.cpp
+  GameObject.cpp
+  GridSnap.cpp
+  HudText.cpp
+  InputManager.cpp
+  Locator.cpp
+  GoldDigger.cpp
+  Renderer.cpp
+  ResourceManager.cpp
+  Scene.cpp
+  SceneManager.cpp
+  Texture.cpp
+  Generating Code...
+  GoldDigger.vcxproj -> C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\Debug\GoldDigger.lib
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2\lib\x86\SDL2.dll
+  1 File(s) copied
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_image\lib\x86\libjpeg-9.dll
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_image\lib\x86\libpng16-16.dll
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_image\lib\x86\libtiff-5.dll
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_image\lib\x86\libwebp-7.dll
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_image\lib\x86\SDL2_image.dll
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_image\lib\x86\zlib1.dll
+  6 File(s) copied
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_ttf\lib\x86\libfreetype-6.dll
+  C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2_ttf\lib\x86\SDL2_ttf.dll
+  2 File(s) copied

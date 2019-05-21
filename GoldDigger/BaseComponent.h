@@ -10,7 +10,6 @@ namespace GD
 
 		virtual void Initialize() = 0;
 		virtual void Update( float deltaTime ) = 0;
-		virtual void Render() const {};
 
 		BaseComponent() = default;
 		virtual ~BaseComponent() = default;

@@ -7,12 +7,6 @@ struct SDL_Texture;
 
 namespace GD
 {
-	/*struct Font
-	{
-		TTF_Font* font;
-		unsigned int size;
-	};*/
-
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
 		std::string mDataPath;

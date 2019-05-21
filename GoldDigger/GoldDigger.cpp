@@ -6,12 +6,6 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include <SDL.h>
-#include "Texture.h"
-#include "GameObject.h"
-#include "Scene.h"
-#include "HudText.h"
-#include "FPSCounter.h"
 #include "GoldDiggerGame.h"
 
 GD::GoldDigger::GoldDigger(GoldDiggerGame* game)
@@ -45,8 +39,6 @@ void GD::GoldDigger::Initialize()
 	Renderer::GetInstance().Init(window, m_Game->m_GameScale);
 
 	m_Game->Initialize();
-
-	SceneManager::GetInstance().Initialize();
 }
 
 void GD::GoldDigger::Cleanup()

@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "BaseComponent.h"
+#include <SDL.h>
 
 GD::GameObject::GameObject() 
 	: m_Components{ }
@@ -13,36 +14,43 @@ GD::GameObject::GameObject()
 
 GD::GameObject::~GameObject() 
 {
-	for (BaseComponent* c : m_Components) 
-	{
-		delete c;
-	}
+	for (BaseComponent* component : m_Components) 
+		delete component;
+	for (Texture* texture : m_Textures)
+		delete texture;
 };
 
 void GD::GameObject::Initialize() 
 {
-	for (BaseComponent* c : m_Components) 
-	{
-		c->Initialize();
-	}
+	for (BaseComponent* component : m_Components) 
+		component->Initialize();
 }
 
 void GD::GameObject::Update( float deltaTime )
 {
-	for (BaseComponent* c : m_Components) 
-	{
-		c->Update(deltaTime);
-	}
+	for (BaseComponent* component : m_Components) 
+		component->Update(deltaTime);
 }
 
 void GD::GameObject::Render() const
 {
-	for (BaseComponent* c : m_Components) 
+	for (const Texture* texture : m_Textures) 
+		if (texture->enabled)
+			Renderer::GetInstance().RenderTexture(texture->SDLTexture, m_Transform, texture->mode);
+}
+
+void GD::GameObject::SetPosition(float x, float y, const Grid & grid)
+{
+	if (grid.cols > 0 && grid.rows > 0)
 	{
-		c->Render();
+		m_Transform.pos.x = grid.bounds.topLeft.x + grid.tileDimensions.x * x;
+		m_Transform.pos.y = grid.bounds.topLeft.y + grid.tileDimensions.y * y;
 	}
-	//const auto pos = mTransform.GetPosition();
-	//Renderer::GetInstance().RenderTexture(*mTexture, pos.x, pos.y);
+	else 
+	{
+		m_Transform.pos.x = x;
+		m_Transform.pos.y = y;
+	}
 }
 
 void GD::GameObject::AddComponent(BaseComponent* component) 
@@ -51,44 +59,8 @@ void GD::GameObject::AddComponent(BaseComponent* component)
 	m_Components.push_back(component);
 }
 
-void GD::GameObject::SetPosition(float x, float y)
+GD::Texture* GD::GameObject::CreateTexture(RenderMode mode, bool enabled) 
 {
-	m_Transform.pos.x = x;
-	m_Transform.pos.y = y;
-}
-
-void GD::GameObject::SetScale(float x, float y)
-{
-	m_Transform.scale.x = x;
-	m_Transform.scale.y = y;
-}
-
-void GD::GameObject::SetPosition( const GD::Vector2& pos ) 
-{
-	m_Transform.pos = pos;
-}
-
-void GD::GameObject::SetScale(const GD::Vector2& scale) 
-{
-	m_Transform.scale = scale;
-}
-
-void GD::GameObject::SetTransform(const Transform& transform)
-{
-	m_Transform = transform;
-}
-
-const GD::Transform & GD::GameObject::GetTransform() const
-{
-	return m_Transform;
-}
-
-const GD::Vector2& GD::GameObject::GetPosition() const
-{
-	return m_Transform.pos;
-}
-
-const GD::Vector2& GD::GameObject::GetScale() const
-{
-	return m_Transform.scale;
+	m_Textures.push_back(new Texture{nullptr, mode, enabled});
+	return m_Textures[m_Textures.size()-1];
 }

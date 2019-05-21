@@ -1,6 +1,6 @@
 #pragma once
 #include "Singleton.h"
-#include <map>
+#include <vector>
 #include "Structs.h"
 
 struct SDL_Window;
@@ -12,7 +12,7 @@ namespace GD
 	class Renderer final : public Singleton<Renderer>
 	{
 	private:
-		SDL_Renderer* mRenderer = nullptr;
+		SDL_Renderer* m_Renderer = nullptr;
 		float m_GameScale;
 
 	public:
@@ -29,7 +29,7 @@ namespace GD
 		void RenderTexture(SDL_Texture* texture, const Transform& transform, 
 			GD::RenderMode mode = GD::RenderMode::corner) const;
 
-		SDL_Renderer* GetSDLRenderer() const { return mRenderer; }
+		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 	};
 }
 

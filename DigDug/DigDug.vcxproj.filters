@@ -24,16 +24,25 @@
     <ClInclude Include="DigDug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FygarBehaviour.h">
+    <ClInclude Include="DigDugCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PookaBehaviour.h">
+    <ClInclude Include="DigDugStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands.h">
+    <ClInclude Include="DigDugStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Controllers.h">
+    <ClInclude Include="DigDugAgents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DigDugBehaviours.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DigDugScenes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DigDugPrefabs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,16 +56,22 @@
     <ClCompile Include="DigDug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FygarBehaviour.cpp">
+    <ClCompile Include="DigDugCommands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PookaBehaviour.cpp">
+    <ClCompile Include="DigDugStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands.cpp">
+    <ClCompile Include="DigDugAgents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Controllers.cpp">
+    <ClCompile Include="DigDugBehaviours.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDugScenes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDugPrefabs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

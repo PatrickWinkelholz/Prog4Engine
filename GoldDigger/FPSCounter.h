@@ -1,20 +1,18 @@
 #pragma once
 #include "BaseComponent.h"
-//#include "HudText.h"
+#include "HudText.h"
 
 namespace GD
 {
-	class HudText;
 	class FPSCounter : public BaseComponent
 	{
 	public:
 
 		void Initialize() override;
 		void Update(float deltaTime) override;
-		void Render() const override;
 
-		FPSCounter( std::string&& fontName );
-		~FPSCounter();
+		FPSCounter(HudText* hudText) : m_Frames{ 0 }, m_SecondCounter{ 0 }, m_HudText{ hudText } {};
+		~FPSCounter() = default;
 		FPSCounter(const FPSCounter& other) = delete;
 		FPSCounter(FPSCounter&& other) = delete;
 		FPSCounter& operator=(const FPSCounter& other) = delete;
@@ -24,7 +22,6 @@ namespace GD
 		int m_Frames;
 		float m_SecondCounter;
 		HudText* m_HudText;
-		std::string m_FontName;
 	};
 }
 

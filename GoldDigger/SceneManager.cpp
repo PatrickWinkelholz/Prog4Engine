@@ -2,17 +2,18 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
+GD::SceneManager::~SceneManager()
+{
+	for (auto pair : m_Scenes) 
+	{
+		if (pair.second)
+			delete pair.second;
+	}
+}
+
 void GD::SceneManager::Update(float deltaTime)
 {
 	m_ActiveScene->Update( deltaTime );
-}
-
-void GD::SceneManager::Initialize() 
-{
-	for (auto scene : m_Scenes) 
-	{
-		scene->Initialize();
-	}
 }
 
 void GD::SceneManager::FixedUpdate() 
@@ -25,19 +26,40 @@ void GD::SceneManager::Render()
 	m_ActiveScene->Render();
 }
 
-GD::Scene& GD::SceneManager::CreateScene(const std::string& name)
+void GD::SceneManager::AddScene(Scene* scene, unsigned int id)
 {
-	return CreateScene(name.c_str());
+	if (m_Scenes[id])
+	{
+		std::cout << "SceneManager: Scene with id: " << id << " already exists!\n";
+		return;
+	}
+
+	m_Scenes[id] = scene;
 }
 
-GD::Scene& GD::SceneManager::CreateScene(const std::string&& name)
+void GD::SceneManager::SwitchScene(unsigned int id) 
 {
-	const auto scene = std::shared_ptr<Scene>(new Scene(name));
-	m_Scenes.push_back(scene);
-	return *scene;
+	if (!m_Scenes[id]) 
+	{
+		std::cout << "SceneManager: Scene with id: " << id << " doesn't exist!\n";
+		return;
+	}
+
+	m_ActiveScene = m_Scenes[id];
 }
 
-void GD::SceneManager::SetActiveScene( GD::Scene& scene ) 
+void GD::SceneManager::LoadScene(unsigned int id) 
 {
-	m_ActiveScene = &scene;
+	if (!m_Scenes[id])
+	{
+		std::cout << "SceneManager: Scene with id: " << id << " doesn't exist!\n";
+		return;
+	}
+
+	//TODO: use threading for this
+	m_Scenes[id]->Load();
+	m_Scenes[id]->Initialize();
+
+	if (!m_ActiveScene)
+		m_ActiveScene = m_Scenes[id];
 }

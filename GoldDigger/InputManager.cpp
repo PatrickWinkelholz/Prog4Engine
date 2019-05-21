@@ -1,7 +1,6 @@
 #include "GoldDiggerPCH.h"
 #include "InputManager.h"
-#include "Command.h"
-#include <SDL.h>
+
 #include <limits.h>
 
 GD::InputManager::InputManager() 
@@ -31,12 +30,6 @@ GD::InputManager::~InputManager()
 		delete m_States[i].first;
 		delete m_States[i].second;
 	}
-
-	//for (auto pair : m_Commands) 
-	//{
-	//	if (pair.second)
-	//		delete pair.second;
-	//}
 }
 
 bool GD::InputManager::ProcessInput()
@@ -61,7 +54,7 @@ bool GD::InputManager::ProcessInput()
 	GetKeyboardState( *m_States[int(ControllerIndex::Keyboard)].first, m_KeyboardMap );
 
 	//Debug input printing
-	std::stringstream inputs{};
+	/*std::stringstream inputs{};
 	for (int index{}; index < m_ConnectedControllers + 1; index++)
 	{
 		inputs << index << ": LS(" <<
@@ -72,17 +65,20 @@ bool GD::InputManager::ProcessInput()
 			") LT: " << GetAxis(GD::ControllerAxis::LeftTrigger, GD::ControllerIndex(index)) <<
 			" RT: " << GetAxis(GD::ControllerAxis::RightTrigger, GD::ControllerIndex(index)) << '\n';
 	}
-	if (inputs.str() != "") std::cout << inputs.str();
+	if (inputs.str() != "") std::cout << inputs.str();*/
 
 	return true;
 }
 
 bool GD::InputManager::GetButton(ControllerButton button, ControllerIndex index, ButtonState state) const
 {
-	if (index != ControllerIndex::Any) 
+	if (index == ControllerIndex::Any) 
+	{
 		for (int i{}; i < m_ConnectedControllers + 1; i++)
 			if (GetButton(button, ControllerIndex(i), state))
 				return true;
+		return false;
+	}
 
 	switch (state)
 	{
@@ -105,7 +101,16 @@ bool GD::InputManager::GetButton(ControllerButton button, ControllerIndex index,
 float GD::InputManager::GetAxis(ControllerAxis axis, ControllerIndex index) const 
 {
 	if (index == ControllerIndex::Any)
-		return 0;
+	{
+		float largest = 0;
+		for (int i{}; i < m_ConnectedControllers + 1; i++)
+		{
+			float current = GetAxis(axis, ControllerIndex(i));
+			if (abs(current) > abs(largest))
+				largest = current;
+		}
+		return largest;
+	}
 
 	float value{};
 	switch (axis)

@@ -1,37 +1,44 @@
 #include "pch.h"
-#include <memory>
-#include <string>
-#include <SDL.h>
 #include "DigDug.h"
 
-#include "Components.h"
-#include "ResourceManager.h"
-#include "SceneManager.h"
-#include "Scene.h"
-#include "GameObject.h"
-#include "InputManager.h"
-#include "structs.h"
-#include "Controllers.h"
-#include "Commands.h"
+#include <string>
+#include <SDL.h>
+#include <ResourceManager.h>
+#include <InputManager.h>
+#include <SceneManager.h>
+#include <GameObject.h>
+#include <structs.h>
 
-using namespace GD;
+#include "DigDugScenes.h"
 
-DigDug::DigDug() : GoldDiggerGame({ 240.f, 240.f }, 16, 3.f, 0.02f, 16.f)
+DD::GameMode DD::DigDug::m_GameMode{ GameMode::SinglePlayer };
+const GD::Vector2 DD::DigDug::m_Dimensions{ 224.f, 288.f };
+const int DD::DigDug::m_Rows{ 14 };
+const int DD::DigDug::m_Cols{ 18 };
+const GD::Vector2 DD::DigDug::m_TileDimensions{ DigDug::m_Dimensions.x / float(m_Rows), DigDug::m_Dimensions.y / float(m_Cols) };
+
+const GD::Grid DD::DigDug::m_Grid{ {{0, m_TileDimensions.y * 2.f}, {m_Dimensions.x, m_Dimensions.y - m_TileDimensions.y}}, m_Rows, m_Cols - 3 };
+
+DD::DigDug::DigDug() : GoldDiggerGame(m_Dimensions, 16, 3.f, 0.02f)
 {
 
 }
 
-DigDug::~DigDug()
+DD::DigDug::~DigDug()
 {
 
 }
 
-void DigDug::Initialize() 
+void DD::DigDug::Initialize() 
 {
 	LoadResources();
-	LoadScenes();
 
-	KeyboardMap map{};
+	//Create Scenes
+	GD::SceneManager::GetInstance().AddScene(new MenuScene(), static_cast<unsigned int>(Scenes::Menu));
+	GD::SceneManager::GetInstance().AddScene(new Level1Scene(), static_cast<unsigned int>(Scenes::Level1));
+	GD::SceneManager::GetInstance().AddScene(new Level2Scene(), static_cast<unsigned int>(Scenes::Level2));
+	
+	GD::KeyboardMap map{};
 	map.LeftStickUp = SDL_SCANCODE_W;
 	map.LeftStickDown = SDL_SCANCODE_S;
 	map.LeftStickRight = SDL_SCANCODE_D;
@@ -40,55 +47,25 @@ void DigDug::Initialize()
 	map.A = SDL_SCANCODE_SPACE;
 	map.RightBumper = SDL_SCANCODE_Y;
 	map.LeftStick = SDL_SCANCODE_LALT;
-	InputManager::GetInstance().MapKeyboard( map );
+	map.Start = SDL_SCANCODE_RETURN;
+	GD::InputManager::GetInstance().MapKeyboard( map );
+
+	GD::SceneManager::GetInstance().LoadScene(static_cast<unsigned int>(Scenes::Menu));
 }
 
-void DigDug::LoadScenes() 
+void DD::DigDug::LoadResources()
 {
-	Scene& menuScene = SceneManager::GetInstance().CreateScene("menu");
-	//Scene& level1Scene = SceneManager::GetInstance().CreateScene("level1");
-	SceneManager::GetInstance().SetActiveScene(menuScene);
-
-	/*std::shared_ptr<GameObject> go_Background = std::make_shared<GameObject>();
-	go_Background->AddComponent(new Texture("background"));
-	menuScene.Add(go_Background);*/
-
-	std::shared_ptr<GameObject> go_Logo = std::make_shared<GameObject>();
-	go_Logo->AddComponent(new Texture("Title", RenderMode::center));
-	go_Logo->SetPosition(m_Dimensions.x / 2.f, m_Dimensions.y / 2.f);
-	menuScene.Add(go_Logo);
-
-	std::shared_ptr<GameObject> go_Headline = std::make_shared<GameObject>();
-	go_Headline->AddComponent(new HudText("Welcome to", "8bit", RenderMode::center, SDL_Color{255, 255, 255}));
-	go_Headline->SetPosition(m_Dimensions.x / 2.f, m_Dimensions.y * 0.4f);
-	go_Headline->SetScale(0.5f, 0.5f);
-	menuScene.Add(go_Headline);
-
-	std::shared_ptr<GameObject> go_FPSCounter = std::make_shared<GameObject>();
-	go_FPSCounter->AddComponent(new FPSCounter( "8bit" ));
-	go_FPSCounter->SetScale(1.f / 3.f, 1.f / 3.f);
-	menuScene.Add(go_FPSCounter);
-
-	std::shared_ptr<GameObject> go_DigDug = std::make_shared<GameObject>();
-	go_DigDug->AddComponent(new Texture("Rock", RenderMode::center));
-	go_DigDug->SetPosition(m_Dimensions.x / 2.f, m_Dimensions.y / 2.f);
-	PlayerController* controller = new PlayerController( GD::ControllerIndex::One );
-	controller->AssignAxis(GD::ControllerAxis::LeftStickX, new MoveHorizontal());
-	controller->AssignAxis(GD::ControllerAxis::LeftStickY, new MoveVertical());
-	go_DigDug->AddComponent( controller );
-	menuScene.Add(go_DigDug);
-}
-
-void DigDug::LoadResources()
-{
-	//telling
-	ResourceManager::GetInstance().Init("Resources/");
+	//telling ResourceManager where to find resources
+	GD::ResourceManager::GetInstance().Init("Resources/");
 
 	//loading fonts
-	ResourceManager::GetInstance().LoadFont("8bit.ttf", 36);
+	GD::ResourceManager::GetInstance().LoadFont("8bit.ttf", 36);
 
-	//loading textures
-	ResourceManager::GetInstance().LoadTexture("Title.png");
-	ResourceManager::GetInstance().LoadTexture("Rock.png");
-	//ResourceManager::GetInstance().LoadTexture("background.jpg");
+	//loading Sprites
+	GD::ResourceManager::GetInstance().LoadTexture("Title.png");
+	GD::ResourceManager::GetInstance().LoadTexture("Rock.png");
+	GD::ResourceManager::GetInstance().LoadTexture("DigDugTemp.png");
+	GD::ResourceManager::GetInstance().LoadTexture("FygarTemp.png");
+	GD::ResourceManager::GetInstance().LoadTexture("PookaTemp.png");
+	GD::ResourceManager::GetInstance().LoadTexture("Background.png");
 }

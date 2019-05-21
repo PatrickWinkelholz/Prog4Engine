@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #include <vld.h>
 
 #include "GoldDigger.h"
@@ -10,7 +8,7 @@
 
 int main()
 {
-	DigDug* digDug{ new DigDug() };
+	DD::DigDug* digDug{ new DD::DigDug() };
 	GD::GoldDigger goldDigger{ digDug };
 	goldDigger.Run();
 

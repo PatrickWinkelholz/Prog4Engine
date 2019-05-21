@@ -1,4 +1,5 @@
 #pragma once
+#include <Structs.h>
 
 namespace DD
 {
@@ -14,5 +15,10 @@ namespace DD
 		Menu = 0,
 		Level1,
 		Level2
+	};
+
+	struct DigDugInput : GD::Input 
+	{
+		bool attack;
 	};
 }

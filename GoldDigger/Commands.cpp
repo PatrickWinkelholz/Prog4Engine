@@ -4,27 +4,23 @@
 #include "Components.h"
 #include "GameObject.h"
 
-void GD::MoveHorizontal::Execute(GD::GameObject& gameObject, float axisValue)
+void GD::MoveHorizontal::Execute(const GD::GameObject& /*gameObject*/, float axisValue)
 {
-	GD::Physics* physics = gameObject.GetComponent<GD::Physics>();
-	if (physics)
-		physics->SetMoveDirectionX(axisValue);
+	m_Input->movement.x = axisValue;
 }
 
-void GD::MoveVertical::Execute(GD::GameObject& gameObject, float axisValue)
+void GD::MoveVertical::Execute(const GD::GameObject& /*gameObject*/, float axisValue)
 {
-	GD::Physics* physics = gameObject.GetComponent<GD::Physics>();
-	if (physics)
-		physics->SetMoveDirectionY(-axisValue);
+	m_Input->movement.y = -axisValue;
 }
 
-void GD::SwitchScene::Execute(GD::GameObject& /*gameObject*/)
+void GD::SwitchScene::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/)
 {
 	GD::SceneManager::GetInstance().LoadScene(m_SceneID);
 	GD::SceneManager::GetInstance().SwitchScene(m_SceneID);
 }
 
-void GD::CycleButtons::Execute(GD::GameObject& /*gameObject*/, float axisValue)
+void GD::CycleButtons::Execute(const GD::GameObject& /*gameObject*/, float axisValue)
 {
 	if (!GD::MenuButton::s_ActiveButton)
 		return;
@@ -46,14 +42,14 @@ void GD::CycleButtons::Execute(GD::GameObject& /*gameObject*/, float axisValue)
 		m_Enabled = abs(axisValue) < 0.5f;
 }
 
-void GD::ExecuteCurrentButton::Execute(GD::GameObject& /*gameObject*/)
+void GD::ExecuteCurrentButton::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/)
 {
 	if (GD::MenuButton::s_ActiveButton)
 		GD::MenuButton::s_ActiveButton->ExecuteCommand();
 	//GD::MenuButton::s_ActiveButton
 }
 
-void GD::QuitGame::Execute(GD::GameObject& /*gameObject*/) 
+void GD::QuitGame::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/) 
 {
 	SDL_Event quitEvent{};
 	quitEvent.type = SDL_QUIT;

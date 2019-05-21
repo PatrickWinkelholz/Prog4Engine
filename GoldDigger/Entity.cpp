@@ -1,9 +1,24 @@
 #include "GoldDiggerPCH.h"
 #include "Entity.h"
+#include "Agents.h"
 
-void GD::Entity::Update(float /*elapsedSec*/)
+GD::Entity::~Entity() 
 {
-	GD::State* state = m_Behaviour->HandleInput();
+	delete m_Agent;
+	delete m_Behaviour;
+	delete m_State;
+}
+
+void GD::Entity::Initialize() 
+{
+	m_Agent->Initialize( &m_Input );
+}
+
+void GD::Entity::Update(float elapsedSec)
+{
+	//isn't this beautiful?
+	m_Agent->GenerateInput(*m_GameObject, elapsedSec);
+	GD::State* state = m_Behaviour->HandleInput( m_Input);
 	if (state)
 	{
 		m_State->Exit();
@@ -11,4 +26,5 @@ void GD::Entity::Update(float /*elapsedSec*/)
 		m_State = state;
 		m_State->Enter();
 	}
+	m_State->Update( *m_GameObject, m_Input, elapsedSec);
 }

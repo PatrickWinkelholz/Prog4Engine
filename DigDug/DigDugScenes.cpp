@@ -6,6 +6,8 @@
 #include "DigDug.h"
 #include "DigDugAgents.h"
 #include "DigDugCommands.h"
+#include "DigDugBehaviours.h"
+#include "DigDugStates.h"
 
 using namespace GD;
 
@@ -85,7 +87,7 @@ void DD::Level1Scene::Load()
 	digDugAgent->AssignAxis(GD::ControllerAxis::LeftStickX, new MoveHorizontal());
 	digDugAgent->AssignAxis(GD::ControllerAxis::LeftStickY, new MoveVertical());
 	digDugAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Attack());
-	go_DigDug->AddComponent(new Controller(digDugAgent));
+	go_DigDug->AddComponent(new Entity(new DigDugBehaviour(), digDugAgent, new Idle()));
 	go_DigDug->AddComponent(new Physics(40.f));
 	go_DigDug->AddComponent(new GridSnap(grid));
 	go_DigDug->SetPosition(6.f, 0.f, grid);
@@ -98,7 +100,7 @@ void DD::Level1Scene::Load()
 		digDug2Agent->AssignAxis(GD::ControllerAxis::LeftStickX, new MoveHorizontal());
 		digDug2Agent->AssignAxis(GD::ControllerAxis::LeftStickY, new MoveVertical());
 		digDug2Agent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Attack());
-		go_DigDug2->AddComponent(new Controller(digDug2Agent));
+		go_DigDug2->AddComponent(new Entity(new DigDugBehaviour(), digDug2Agent, new Idle()));
 		go_DigDug2->AddComponent(new Physics(40.f));
 		go_DigDug2->AddComponent(new GridSnap(grid));
 		go_DigDug2->SetPosition(6.f, 1.f, grid);
@@ -106,7 +108,7 @@ void DD::Level1Scene::Load()
 
 	GameObject* go_Pooka = CreateGameObject();
 	go_Pooka->AddComponent(new Sprite(go_Pooka->CreateTexture(), "PookaTemp"));
-	go_Pooka->AddComponent(new Controller(new PookaAgent()));
+	go_Pooka->AddComponent(new Entity(new EnemyBehaviour(), new EnemyBaseAgent(), new Idle()));
 	go_Pooka->AddComponent(new Physics(40.f));
 	go_Pooka->AddComponent(new GridSnap(grid));
 	go_Pooka->SetPosition(5.f, 6.f, grid);
@@ -119,10 +121,10 @@ void DD::Level1Scene::Load()
 		fygarPlayerAgent->AssignAxis(ControllerAxis::LeftStickX, new MoveHorizontal());
 		fygarPlayerAgent->AssignAxis(ControllerAxis::LeftStickY, new MoveVertical());
 		fygarPlayerAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Attack());
-		go_Fygar->AddComponent(new Controller(fygarPlayerAgent));
+		go_Fygar->AddComponent(new Entity(new EnemyBehaviour(), fygarPlayerAgent, new Idle()));
 	}
 	else
-		go_Fygar->AddComponent(new Controller(new FygarAgent()));
+		go_Fygar->AddComponent(new Entity(new EnemyBehaviour(), new FygarAgent(), new Idle()));
 
 	go_Fygar->AddComponent(new Physics(40.f));
 	go_Fygar->AddComponent(new GridSnap(grid));

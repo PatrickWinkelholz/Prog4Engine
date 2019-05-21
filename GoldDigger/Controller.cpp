@@ -1,14 +1,14 @@
 #include "GoldDiggerPCH.h"
 #include "Controller.h"
 #include "Agents.h"
-#include "Structs.h"
 
 GD::Controller::~Controller()
 {
 	delete m_Agent;
 }
 
-void GD::Controller::Update( float deltaTime ) 
+void GD::Controller::Update(float elapsedSec) 
 {
-	m_Agent->HandleInput( *m_GameObject );
+	Input input{};
+	m_Agent->GenerateInput( *m_GameObject, elapsedSec);
 }

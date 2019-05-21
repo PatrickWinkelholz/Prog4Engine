@@ -7,22 +7,31 @@ class GD::GameObject;
 namespace DD 
 {
 	//Agents are purely for input (AI)
-	class FygarAgent : public GD::Agent
+	class EnemyBaseAgent : public GD::Agent
 	{
 	public:
-		FygarAgent() = default;
-		~FygarAgent() = default;
+		EnemyBaseAgent();
+		virtual ~EnemyBaseAgent() = default;
 
-		void HandleInput(GD::GameObject& gameObject) override;
+		virtual void GenerateInput(const GD::GameObject& gameObject, float elapsedSec) override;
+	
+	private:
+		void ChangeDirection();
+		inline float RandomRange( float low, float high);
+
+		float m_Timer;
+		GD::Vector2 m_DirectionChangeTimeBounds;
+		float m_DirectionChangeTime;
+		GD::Vector2 m_Direction;
 	};
 
-	class PookaAgent : public GD::Agent
+	class FygarAgent : public EnemyBaseAgent 
 	{
 	public:
-		PookaAgent() = default;
-		~PookaAgent() = default;
+		FygarAgent();
+		~FygarAgent() = default;
 
-		void HandleInput(GD::GameObject& gameObject) override;
+		void GenerateInput(const GD::GameObject& gameObject, float elapsedSec) override;
 	};
 }
 

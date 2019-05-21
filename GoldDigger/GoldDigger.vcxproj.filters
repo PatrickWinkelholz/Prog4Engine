@@ -98,13 +98,13 @@
     <ClInclude Include="Achievements.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Source Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Agents.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -157,13 +157,13 @@
     <ClCompile Include="Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Agents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>

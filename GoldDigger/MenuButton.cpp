@@ -20,6 +20,7 @@ GD::MenuButton::MenuButton( GD::Texture* off, GD::Texture* on, Command* command,
 
 void GD::MenuButton::ExecuteCommand() 
 {
+	Input input{};
 	if (m_Command)
 		m_Command->Execute( *m_GameObject );
 }

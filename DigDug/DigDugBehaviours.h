@@ -14,7 +14,7 @@ namespace DD
 		EnemyBehaviour() = default;
 		~EnemyBehaviour() = default;
 
-		GD::State* HandleInput() override;
+		GD::State* HandleInput( const GD::Input& Input ) override;
 	};
 
 	class DigDugBehaviour : public GD::EntityBehaviour 
@@ -23,7 +23,7 @@ namespace DD
 		DigDugBehaviour() = default;
 		~DigDugBehaviour() = default;
 
-		GD::State* HandleInput() override;
+		GD::State* HandleInput( const GD::Input& input ) override;
 	};
 }
 

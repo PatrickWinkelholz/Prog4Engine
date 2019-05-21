@@ -4,31 +4,39 @@
 
 namespace GD
 {
-	// 
+	class Agent;
+
 	class EntityBehaviour
 	{
 	public:
 		EntityBehaviour() = default;
 		virtual ~EntityBehaviour() = default;
 
-		virtual GD::State* HandleInput() = 0;
+		virtual GD::State* HandleInput( const Input& input ) = 0;
+	
+	protected:
+		Input m_PreviousInput;
 	};
 
-	//This component is needed to hold the specific behaviour (pooka, fygar, digdug...)
-	//If those were seperate components GetComponent() wouldn't get the interface with the Attack funciton
 	class Entity : public BaseComponent
 	{
+		friend class Command;
 	public:
-		Entity(EntityBehaviour* behaviour) : m_Behaviour{ behaviour } {};
-		~Entity() = default;
+		Entity(EntityBehaviour* behaviour, Agent* agent, State* initialState) 
+			: m_Behaviour{ behaviour } 
+			, m_Agent{ agent }
+			, m_State{ initialState }
+		{};
+		~Entity();
 
-		void Initialize() override {};
+		void Initialize() override;
 		void Update(float elapsedSec) override;
-		EntityBehaviour* GetBehaviour() const { return m_Behaviour; };
 
 	private:
 		EntityBehaviour* m_Behaviour;
+		Agent* m_Agent;
 		GD::State* m_State;
+		Input m_Input;
 	};
 }
 

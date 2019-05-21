@@ -3,73 +3,70 @@
 
 namespace GD 
 {
+	struct Input;
 	class GameObject;
 
+	//TODO: merge these 2 in one
 	class Command
 	{
+		friend class Agent;
 	public:
 		Command() = default;
 		virtual ~Command() = default;
 
-		virtual void Execute(GameObject& gameObject) = 0;
+		virtual void Execute(const GameObject& gameObject, float axisValue = 0) = 0;
+
+	protected:
+		Input* m_Input;
 	};
 
-	class AxisCommand
-	{
-	public:
-		AxisCommand() = default;
-		virtual ~AxisCommand() = default;
-
-		virtual void Execute(GameObject& gameObject, float axisValue) = 0;
-	};
-
-	class MoveHorizontal : public GD::AxisCommand
+	class MoveHorizontal : public Command
 	{
 	public:
 		~MoveHorizontal() = default;
-		void Execute(GD::GameObject& gameObject, float axisValue) override;
+		void Execute(const GameObject& gameObject, float axisValue = 0) override;
 	};
 
-	class MoveVertical : public GD::AxisCommand
+	class MoveVertical : public Command
 	{
 	public:
 		~MoveVertical() = default;
-		void Execute(GD::GameObject& gameObject, float axisValue) override;
+		void Execute(const GameObject& gameObject, float axisValue = 0) override;
 	};
 
-	class SwitchScene : public GD::Command
+	class SwitchScene : public Command
 	{
 	public:
 		SwitchScene(unsigned int id) : m_SceneID{ id } {};
 		~SwitchScene() = default;
-		void Execute(GD::GameObject& gameObject) override;
+		void Execute(const GameObject& gameObject, float axisValue = 0) override;
 
 	private:
 		unsigned int m_SceneID;
 	};
 
-	class CycleButtons : public GD::AxisCommand
+	class CycleButtons : public Command
 	{
 	public:
 		~CycleButtons() = default;
-		void Execute(GD::GameObject& gameObject, float axisValue) override;
+		void Execute(const GameObject& gameObject, float axisValue = 0) override;
 
 	private:
 		bool m_Enabled = true;
 	};
 
-	class ExecuteCurrentButton : public GD::Command
+	class ExecuteCurrentButton : public Command
 	{
 	public:
 		~ExecuteCurrentButton() = default;
-		void Execute(GD::GameObject& gameObject) override;
+		void Execute(const GameObject& gameObject, float axisValue = 0) override;
 	};
 
-	class QuitGame : public GD::Command 
+	class QuitGame : public Command 
 	{
 	public:
 		~QuitGame() = default;
-		void Execute(GD::GameObject& gameObject) override;
+		void Execute(const GameObject& gameObject, float axisValue = 0) override;
 	};
 }
 

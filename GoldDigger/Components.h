@@ -6,4 +6,5 @@
 #include "Physics.h"
 #include "Sprite.h"
 #include "MenuButton.h"
+#include "Entity.h"
 #include "Controller.h"

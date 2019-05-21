@@ -11,7 +11,7 @@ namespace DD
 		StartGame(GameMode mode) : m_Mode{ mode } {};
 		~StartGame() = default;
 
-		void Execute(GD::GameObject& gameObject) override;
+		void Execute(const GD::GameObject& gameObject, float axisValue = 0) override;
 
 	private:
 		GameMode m_Mode;
@@ -23,7 +23,7 @@ namespace DD
 		Attack() = default;
 		~Attack() = default;
 
-		void Execute(GD::GameObject& gameObject) override;
+		void Execute(const GD::GameObject& gameObject, float axisValue = 0) override;
 	};
 
 }

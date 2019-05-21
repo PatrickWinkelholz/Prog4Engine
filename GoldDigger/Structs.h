@@ -7,6 +7,8 @@ struct SDL_Texture;
 
 namespace GD 
 {
+	class GameObject;
+
 	struct Vector2 
 	{
 		float x;
@@ -114,6 +116,12 @@ namespace GD
 		std::string message;
 	};
 
+	struct Input
+	{
+		Vector2 movement{};
+		bool attack = false;
+	};
+
 	class State 
 	{
 	public:
@@ -121,6 +129,7 @@ namespace GD
 		virtual ~State() = default;
 
 		virtual void Enter() = 0;
+		virtual void Update(const GameObject& gameObject, const Input& input, float elapsedSec) = 0;
 		virtual void Exit() = 0;
 	};
 

@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GoldDiggerGame.h"
+#include <ctime>
 
 GD::GoldDigger::GoldDigger(GoldDiggerGame* game)
 	: m_Game{ game }
@@ -51,6 +52,7 @@ void GD::GoldDigger::Cleanup()
 
 void GD::GoldDigger::Run()
 {
+	srand(unsigned int(time(nullptr)));
 	Initialize();
 	{
 		auto t = std::chrono::high_resolution_clock::now();

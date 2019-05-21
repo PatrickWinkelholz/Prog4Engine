@@ -10,6 +10,7 @@ namespace DD
 		~Walking() = default;
 
 		void Enter() override {};
+		void Update( const GD::GameObject& gameObject, const GD::Input& input, float elapsedSec);
 		void Exit() override {};
 	};
 
@@ -20,6 +21,7 @@ namespace DD
 		~Idle() = default;
 
 		void Enter() override {};
+		void Update( const GD::GameObject& gameObject, const GD::Input& input, float elapsedSec);
 		void Exit() override {};
 	};
 
@@ -30,6 +32,7 @@ namespace DD
 		~Floating() = default;
 
 		void Enter() override {};
+		void Update( const GD::GameObject& gameObject, const GD::Input& input, float elapsedSec);
 		void Exit() override {};
 	};
 
@@ -40,16 +43,18 @@ namespace DD
 		~Pumping() = default;
 
 		void Enter() override {};
+		void Update( const GD::GameObject& gameObject, const GD::Input& input, float elapsedSec);
 		void Exit() override {};
 	};
 
-	class Attacking : public GD::State 
+	class BreathingFire : public GD::State 
 	{
 	public:
-		Attacking() = default;
-		~Attacking() = default;
+		BreathingFire() = default;
+		~BreathingFire() = default;
 
 		void Enter() override {};
+		void Update( const GD::GameObject& gameObject, const GD::Input& input, float elapsedSec);
 		void Exit() override {};
 	};
 
@@ -60,6 +65,7 @@ namespace DD
 		~Charging() = default;
 
 		void Enter() override {};
+		void Update( const GD::GameObject& gameObject, const GD::Input& input, float elapsedSec);
 		void Exit() override {};
 	};
 }

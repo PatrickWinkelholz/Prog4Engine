@@ -2,20 +2,29 @@
 #include "BaseComponent.h"
 #include "structs.h"
 #include <map>
+#include <vector>
 
 namespace GD 
 {
 	class Command;
-	class AxisCommand;
 	class GameObject;
 
+	//Agents are responsible for executing commands.
+	//These commands can result in immediate actions (like switching scenes) or they can be
+	//used to generate input for an entity (like which buttons were pressed by the player / when does the AI decide to fire / move)
+	//This input is then processed by the entity component's Behaviour member
+	//The GoldDigger engine user can create his own agents (for AI for example), but the basic player input agent is included in the engine 
 	class Agent 
 	{
 	public:
 		Agent() = default;
-		virtual ~Agent() = default;
+		virtual ~Agent();
 
-		virtual void HandleInput(GameObject& gameObject) = 0;
+		void Initialize( Input* input );
+		virtual void GenerateInput(const GameObject& gameObject, float elapsedSec) = 0;
+	
+	protected:
+		std::vector<Command*> m_Commands;
 	};
 
 	class PlayerInputAgent : public GD::Agent
@@ -23,17 +32,17 @@ namespace GD
 
 	public:
 		PlayerInputAgent(GD::ControllerIndex index) : m_Index{ index } {};
-		~PlayerInputAgent();
+		~PlayerInputAgent() = default;
 
-		void HandleInput(GameObject& gameObject) override;
+		void GenerateInput(const GameObject& gameObject, float elapsedSec) override;
 
 		void AssignButton(GD::ControllerButton button, GD::ButtonState state, GD::Command* command);
-		void AssignAxis(GD::ControllerAxis axis, AxisCommand* command);
+		void AssignAxis(GD::ControllerAxis axis, Command* command);
 
 	private:
 		GD::ControllerIndex m_Index;
 		std::map<std::pair<GD::ControllerButton, GD::ButtonState>, Command*> m_ButtonCommands;
-		std::map<GD::ControllerAxis, AxisCommand*> m_AxisCommands;
+		std::map<GD::ControllerAxis, Command*> m_AxisCommands;
 	};
 }
 

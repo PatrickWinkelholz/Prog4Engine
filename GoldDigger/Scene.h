@@ -23,6 +23,12 @@ namespace GD
 		GameObject* CreateGameObject();
 
 	private: 
+
+		void MergeNewObjects(); //puts all pending gameObjects into m_Objects 
+		//(this is needed to avoid ordering issues when adding objects at runtime)
+
 		std::vector<GameObject*> m_Objects{};
+		std::vector<GameObject*> m_NewObjects{};
+		std::vector<GameObject*> m_DestroyedObjects{};
 	};
 }

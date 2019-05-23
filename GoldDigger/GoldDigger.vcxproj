@@ -182,6 +182,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformShortName)\*.dll"  "$(Outpu
     <ClInclude Include="Achievements.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="Agents.h" />
@@ -212,6 +213,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformShortName)\*.dll"  "$(Outpu
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Agents.cpp" />
     <ClCompile Include="Controller.cpp" />

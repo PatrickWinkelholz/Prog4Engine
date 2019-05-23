@@ -36,36 +36,16 @@ void DD::MenuScene::Load()
 	go_PlayerController->AddComponent(new Controller(playerInput));
 
 	//buttons
-	GameObject* go_ButtonSinglePlayer = CreateGameObject();
-	Texture* onTexture = go_ButtonSinglePlayer->CreateTexture(RenderMode::center);
-	Texture* offTexture = go_ButtonSinglePlayer->CreateTexture(RenderMode::center);
-	go_ButtonSinglePlayer->AddComponent(new HudText(onTexture, "Single Player", "8bit", { 255, 255, 0 }));
-	go_ButtonSinglePlayer->AddComponent(new HudText(offTexture, "Single Player", "8bit"));
-	go_ButtonSinglePlayer->AddComponent(new MenuButton(offTexture, onTexture, new StartGame(GameMode::SinglePlayer)));
+	GameObject* go_ButtonSinglePlayer = DigDugPrefabs::CreateMenuButton(*this, "Single Player", "8bit", new StartGame(GameMode::SinglePlayer));
 	go_ButtonSinglePlayer->SetTransform({ {dimensions.x / 2.f, dimensions.y * 0.6f }, { 0.5f, 0.5f }, 0 });
 
-	GameObject* go_ButtonCoop = CreateGameObject();
-	onTexture = go_ButtonCoop->CreateTexture(RenderMode::center);
-	offTexture = go_ButtonCoop->CreateTexture(RenderMode::center);
-	go_ButtonCoop->AddComponent(new HudText(offTexture, "Co-op", "8bit"));
-	go_ButtonCoop->AddComponent(new HudText(onTexture, "Co-op", "8bit", { 255, 255, 0 }));
-	go_ButtonCoop->AddComponent(new MenuButton(offTexture, onTexture, new StartGame(GameMode::Coop)));
+	GameObject* go_ButtonCoop = DigDugPrefabs::CreateMenuButton(*this, "Co-op", "8bit", new StartGame(GameMode::Coop));
 	go_ButtonCoop->SetTransform({ {dimensions.x / 2.f, dimensions.y * 0.67f }, { 0.5f, 0.5f }, 0 });
 
-	GameObject* go_ButtonVersus = CreateGameObject();
-	onTexture = go_ButtonVersus->CreateTexture(RenderMode::center);
-	offTexture = go_ButtonVersus->CreateTexture(RenderMode::center);
-	go_ButtonVersus->AddComponent(new HudText(offTexture, "Versus", "8bit"));
-	go_ButtonVersus->AddComponent(new HudText(onTexture, "Versus", "8bit", { 255, 255, 0 }));
-	go_ButtonVersus->AddComponent(new MenuButton(offTexture, onTexture, new StartGame(GameMode::Versus)));
+	GameObject* go_ButtonVersus = DigDugPrefabs::CreateMenuButton(*this, "Versus", "8bit", new StartGame(GameMode::Versus));
 	go_ButtonVersus->SetTransform({ {dimensions.x / 2.f, dimensions.y * 0.74f }, { 0.5f, 0.5f }, 0 });
 
-	GameObject* go_ButtonQuit = CreateGameObject();
-	onTexture = go_ButtonQuit->CreateTexture(RenderMode::center);
-	offTexture = go_ButtonQuit->CreateTexture(RenderMode::center);
-	go_ButtonQuit->AddComponent(new HudText(offTexture, "Quit Game", "8bit"));
-	go_ButtonQuit->AddComponent(new HudText(onTexture, "Quit Game", "8bit", { 255, 255, 0 }));
-	go_ButtonQuit->AddComponent(new MenuButton(offTexture, onTexture, new QuitGame()));
+	GameObject* go_ButtonQuit = DigDugPrefabs::CreateMenuButton(*this, "Quit Game", "8bit", new QuitGame());
 	go_ButtonQuit->SetTransform({ {dimensions.x / 2.f, dimensions.y * 0.81f }, { 0.5f, 0.5f }, 0 });
 }
 

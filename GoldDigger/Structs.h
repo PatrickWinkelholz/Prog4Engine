@@ -75,8 +75,8 @@ namespace GD
 	{
 		Vector2 topLeft;
 		Vector2 botRight;
-		float width { botRight.x - topLeft.x };
-		float height{ botRight.y - topLeft.y };
+		inline float GetWidth() const { return botRight.x - topLeft.x; };
+		inline float GetHeight() const { return botRight.y - topLeft.y; };
 	};
 
 	struct Transform
@@ -129,9 +129,11 @@ namespace GD
 
 	struct Animation
 	{
-		unsigned int nrFrames;
-		float frameTime;
-		Rect allFrames;
+		unsigned int nrFrames = 1;
+		float frameTime = 0.2f;
+		Rect allFrames = {};
+		bool loop = true;
+		inline float GetFrameWidth() const { return allFrames.GetWidth() / static_cast<float>(nrFrames); };
 	};
 
 	enum class ControllerAxis

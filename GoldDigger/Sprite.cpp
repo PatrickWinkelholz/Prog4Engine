@@ -6,26 +6,35 @@
 void GD::Sprite::Initialize()
 {
 	m_Texture->SDLTexture = ResourceManager::GetInstance().GetTexture(m_Name);
+	int w, h;
+	SDL_QueryTexture(m_Texture->SDLTexture, nullptr, nullptr, &w, &h);
+	m_Texture->sourceRect.botRight.x = static_cast<float>( w );
+	m_Texture->sourceRect.botRight.y = static_cast<float>( h );
+
 	PlayAnimation(m_ActiveAnimation);
 }
 
 void GD::Sprite::Update(float deltaTime)
 {
-	if (m_Animations.size() != 0)
+	if (m_Timer < 0)
+		return;
+
+	m_Timer += deltaTime;
+	Animation anim = m_Animations[m_ActiveAnimation];
+	if (m_Timer >= anim.frameTime && anim.frameTime > 0)
 	{
-		m_Timer += deltaTime;
-		Animation anim = m_Animations[m_ActiveAnimation];
-		if (m_Timer >= anim.frameTime && anim.frameTime > 0)
+		m_Timer -= anim.frameTime;
+		m_Texture->sourceRect.topLeft.x += anim.GetFrameWidth();
+		m_Texture->sourceRect.botRight.x += anim.GetFrameWidth();
+		if (m_Texture->sourceRect.topLeft.x >= anim.allFrames.botRight.x - 0.001f) 
 		{
-			m_Timer -= anim.frameTime;
-			m_Texture->sourceRect.topLeft.x += m_Texture->sourceRect.width;
-			m_Texture->sourceRect.botRight.x += m_Texture->sourceRect.width;
-			if (m_Texture->sourceRect.topLeft.x >= anim.allFrames.botRight.x - 0.001f) 
+			if (anim.loop)
 			{
-				m_Texture->sourceRect.topLeft.x = anim.allFrames.topLeft.x;
-				m_Texture->sourceRect.botRight.x = anim.allFrames.botRight.x;
+				ResetAnimation();
 			}
-		}
+			else
+				m_Timer = -1.f;
+		} 
 	}
 }
 
@@ -40,10 +49,14 @@ void GD::Sprite::PlayAnimation(unsigned int id)
 	{
 		m_Timer = 0;
 		m_ActiveAnimation = id;
-		Animation anim = m_Animations[m_ActiveAnimation];
-		m_Texture->sourceRect.topLeft = anim.allFrames.topLeft;
-		m_Texture->sourceRect.botRight = anim.allFrames.botRight;
-		m_Texture->sourceRect.width = anim.allFrames.width / static_cast<float>(anim.nrFrames);
-		m_Texture->sourceRect.height = anim.allFrames.height;
+		ResetAnimation();
 	}
+}
+
+void GD::Sprite::ResetAnimation() 
+{
+	Animation anim = m_Animations[m_ActiveAnimation];
+	m_Texture->sourceRect.topLeft = anim.allFrames.topLeft;
+	m_Texture->sourceRect.botRight.x = anim.allFrames.topLeft.x + anim.GetFrameWidth();
+	m_Texture->sourceRect.botRight.y = anim.allFrames.botRight.y;
 }

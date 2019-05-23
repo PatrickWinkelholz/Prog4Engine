@@ -43,10 +43,8 @@ void DD::DigDug::Initialize()
 	map.LeftStickDown = SDL_SCANCODE_S;
 	map.LeftStickRight = SDL_SCANCODE_D;
 	map.LeftStickLeft = SDL_SCANCODE_A;
-	map.LeftTrigger = SDL_SCANCODE_R;
 	map.A = SDL_SCANCODE_SPACE;
-	map.RightBumper = SDL_SCANCODE_Y;
-	map.LeftStick = SDL_SCANCODE_LALT;
+	map.X = SDL_SCANCODE_E;
 	map.Start = SDL_SCANCODE_RETURN;
 	GD::InputManager::GetInstance().MapKeyboard( map );
 
@@ -64,6 +62,8 @@ void DD::DigDug::LoadResources()
 	//loading Sprites
 	GD::ResourceManager::GetInstance().LoadTexture("Title.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Rock.png");
+	GD::ResourceManager::GetInstance().LoadTexture("Projectile.png");
+	GD::ResourceManager::GetInstance().LoadTexture("Fire.png");
 	GD::ResourceManager::GetInstance().LoadTexture("DigDug.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Fygar.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Pooka.png");

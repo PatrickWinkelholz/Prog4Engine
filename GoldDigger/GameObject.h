@@ -14,6 +14,8 @@ namespace GD
 		void Update( float deltaTime );
 		void Render() const;
 
+		void Destroy();
+
 		void SetPosition(float x, float y, const Grid& grid = {});
 		void SetPosition(const Vector2& position, const Grid& grid = {}) { SetPosition(position.x, position.y, grid); };
 		void SetPositionX(float x, const Grid& grid = {}) { SetPosition(x, m_Transform.pos.y, grid); };
@@ -29,6 +31,7 @@ namespace GD
 		const Transform& GetTransform() const { return m_Transform; };
 		const Vector2& GetPosition() const { return m_Transform.pos; };
 		const Vector2& GetScale() const { return m_Transform.scale; };
+		bool IsDestroyed() const { return m_Destroyed; };
 
 		void AddComponent(BaseComponent* component);
 		template <class T>
@@ -51,9 +54,10 @@ namespace GD
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-	protected:
+	private:
 		std::vector<Texture*> m_Textures;
 		std::vector<BaseComponent*> m_Components;
 		Transform m_Transform;
+		bool m_Destroyed;
 	};
 }

@@ -12,7 +12,8 @@ namespace GD
 			: m_Texture{ texture }
 			, m_Name{ name } 
 			, m_Animations{}
-			, m_ActiveAnimation{0}
+			, m_ActiveAnimation{ 0 }
+			, m_Timer{ -1.f }
 		{};
 		~Sprite() = default;
 
@@ -22,6 +23,8 @@ namespace GD
 		void PlayAnimation(unsigned int id);
 
 	private:
+		void ResetAnimation(); //moves the textures sourcerect back to the first frame
+
 		std::string m_Name;
 		Texture* m_Texture;
 		std::map<unsigned int, Animation> m_Animations;

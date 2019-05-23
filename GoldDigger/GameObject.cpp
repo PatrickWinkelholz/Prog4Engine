@@ -8,6 +8,7 @@
 GD::GameObject::GameObject() 
 	: m_Components{ }
 	, m_Transform{ {0, 0}, {1.f, 1.f}, 0 }
+	, m_Destroyed{ false }
 {
 
 }
@@ -28,6 +29,9 @@ void GD::GameObject::Initialize()
 
 void GD::GameObject::Update( float deltaTime )
 {
+	if (m_Destroyed)
+		return;
+
 	for (BaseComponent* component : m_Components) 
 		if (component->GetEnabled())
 			component->Update(deltaTime);
@@ -35,8 +39,16 @@ void GD::GameObject::Update( float deltaTime )
 
 void GD::GameObject::Render() const
 {
+	if (m_Destroyed)
+		return;
+
 	for (const Texture* texture : m_Textures) 
 		Renderer::GetInstance().RenderTexture(*texture, m_Transform);
+}
+
+void GD::GameObject::Destroy() 
+{
+	m_Destroyed = true;
 }
 
 void GD::GameObject::SetPosition(float x, float y, const Grid & grid)

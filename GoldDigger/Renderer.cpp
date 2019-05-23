@@ -35,38 +35,28 @@ void GD::Renderer::Destroy()
 void GD::Renderer::RenderTexture(const Texture& texture, const float xPos, const float yPos, 
 	const float xScale, const float yScale) const
 {
-	if (texture.enabled) 
+	if (!texture.enabled)
+		return;
+	
+	SDL_Rect src;
+	src.x = static_cast<int>(texture.sourceRect.topLeft.x);
+	src.y = static_cast<int>(texture.sourceRect.topLeft.y);
+	src.w = static_cast<int>(texture.sourceRect.GetWidth());
+	src.h = static_cast<int>(texture.sourceRect.GetHeight());
+	
+	SDL_Rect dst;
+	dst.x = static_cast<int>(xPos * m_GameScale);
+	dst.y = static_cast<int>(yPos * m_GameScale);
+	dst.w = static_cast<int>(src.w * m_GameScale * xScale);
+	dst.h = static_cast<int>(src.h * m_GameScale * yScale);
+	
+	if (texture.mode == RenderMode::center)
 	{
-		SDL_Rect dst;
-		dst.x = static_cast<int>(xPos * m_GameScale);
-		dst.y = static_cast<int>(yPos * m_GameScale);
-
-		SDL_Rect src;
-
-		if (texture.sourceRect.width != 0) 
-		{
-			src.x = static_cast<int>(texture.sourceRect.topLeft.x);
-			src.y = static_cast<int>(texture.sourceRect.topLeft.y);
-			src.w = static_cast<int>(texture.sourceRect.width);
-			src.h = static_cast<int>(texture.sourceRect.height);
-			dst.w = static_cast<int>(src.w * m_GameScale * xScale);
-			dst.h = static_cast<int>(src.h * m_GameScale * yScale);
-		}
-		else 
-		{
-			SDL_QueryTexture(texture.SDLTexture, nullptr, nullptr, &dst.w, &dst.h);
-			dst.w = static_cast<int>(dst.w * m_GameScale * xScale);
-			dst.h = static_cast<int>(dst.h * m_GameScale * yScale);
-		}
-		
-		if (texture.mode == RenderMode::center)
-		{
-			dst.x -= static_cast<int>(dst.w / 2.f);
-			dst.y -= static_cast<int>(dst.h / 2.f);
-		}
-
-		SDL_RenderCopy(GetSDLRenderer(), texture.SDLTexture, texture.sourceRect.width != 0 ? &src : nullptr, &dst);
+		dst.x -= static_cast<int>(dst.w / 2.f);
+		dst.y -= static_cast<int>(dst.h / 2.f);
 	}
+
+	SDL_RenderCopy(GetSDLRenderer(), texture.SDLTexture, texture.sourceRect.GetWidth() != 0 ? &src : nullptr, &dst);
 }
 
 void GD::Renderer::RenderTexture(const Texture& texture, const Vector2& pos, 

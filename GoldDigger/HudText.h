@@ -9,7 +9,8 @@ namespace GD
 	class HudText : public BaseComponent
 	{
 	public:
-		HudText(Texture* texture, const std::string&& text, const std::string&& font, SDL_Color color = {255, 255, 255});
+		HudText(Texture* texture, const std::string&& text, const std::string&& font, 
+			const SDL_Color& color = {255, 255, 255});
 		~HudText() = default;
 		HudText(const HudText& other) = delete;
 		HudText(HudText&& other) = delete;

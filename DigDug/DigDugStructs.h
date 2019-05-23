@@ -31,6 +31,6 @@ namespace DD
 		Pumping,
 		Floating,
 		Charging,
-		BreathingFire
+		Attacking
 	};
 }

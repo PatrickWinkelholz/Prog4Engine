@@ -4,27 +4,33 @@
 namespace GD 
 {
 	class State;
+	class Collider;
 };
 
 namespace DD
 {
-	class EnemyBehaviour : public GD::EntityBehaviour 
+	class EnemyBehaviour : public GD::Behaviour 
 	{
 	public:
 		EnemyBehaviour() = default;
 		~EnemyBehaviour() = default;
 
-		GD::State* HandleInput( GD::Input& Input, unsigned int stateID ) override;
+		void Initialize() override {};
+		GD::State* HandleInput() override;
 	};
 
-	class DigDugBehaviour : public GD::EntityBehaviour 
+	class DigDugBehaviour : public GD::Behaviour 
 	{
 	public:
 
 		DigDugBehaviour() = default;
 		~DigDugBehaviour() = default;
 
-		GD::State* HandleInput( GD::Input& input, unsigned int stateID) override;
+		void Initialize() override;
+		GD::State* HandleInput() override;
+	
+	private:
+		GD::Collider* m_Collider;
 	};
 }
 

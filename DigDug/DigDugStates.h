@@ -6,6 +6,7 @@
 namespace GD 
 {
 	class Physics;
+	class GameObject;
 }
 
 namespace DD 
@@ -16,8 +17,9 @@ namespace DD
 		Walking() : State( static_cast<unsigned int>( StateID::Walking ) ), m_Physics( nullptr ) {};
 		~Walking() = default;
 
-		void Enter(const GD::GameObject& gameObject) override;
-		void Update( const GD::GameObject& gameObject, const GD::Input& input, float elapsedSec) override;
+		void Enter() override;
+		GD::State* Update(float elapsedSec) override;
+		void Exit() override;
 	
 	private:
 		GD::Physics* m_Physics;
@@ -29,8 +31,8 @@ namespace DD
 		Idle() : State(static_cast<unsigned int>( StateID::Idle)) {};
 		~Idle() = default;
 
-		void Enter(const GD::GameObject& gameObject) override;
-		void Update(const GD::GameObject& /*gameObject*/, const GD::Input& /*input*/, float /*elapsedSec*/) override {};
+		void Enter() override;
+		GD::State* Update(float elapsedSec) override;
 	};
 
 	class Floating : public GD::State 
@@ -39,9 +41,9 @@ namespace DD
 		Floating() : State(static_cast<unsigned int>( StateID::Floating)) {};
 		~Floating() = default;
 
-		void Enter(const GD::GameObject& gameObject) override;
-		void Update(const GD::GameObject& /*gameObject*/, const GD::Input& /*input*/, float /*elapsedSec*/) override;
-		void Exit(const GD::GameObject& gameObject) override;
+		void Enter() override;
+		GD::State* Update(float elapsedSec) override;
+		void Exit() override;
 	private:
 		GD::Physics* m_Physics;
 	};
@@ -52,24 +54,52 @@ namespace DD
 		Pumping() : State(static_cast<unsigned int>( StateID::Pumping)) {};
 		~Pumping() = default;
 
-		void Update(const GD::GameObject& /*gameObject*/, const GD::Input& /*input*/, float /*elapsedSec*/) override {};
+		GD::State* Update(float /*elapsedSec*/) override { return nullptr; };
 	};
 
-	class BreathingFire : public GD::State 
+	class Attacking : public GD::State 
 	{
 	public:
-		BreathingFire() : State(static_cast<unsigned int>( StateID::BreathingFire)) {};
-		~BreathingFire() = default;
+		Attacking( float attackDuration, GD::GameObject* projectile )
+			: State(static_cast<unsigned int>( StateID::Attacking)) 
+			, m_Duration( attackDuration )
+			, m_Timer( 0 )
+			, m_Projectile( projectile )
+		{};
+		~Attacking() = default;
 
-		void Update(const GD::GameObject& /*gameObject*/, const GD::Input& /*input*/, float /*elapsedSec*/) override {};
+		GD::State* Update(float elapsedSec) override;
+		void Exit() override;
+
+	private:
+		float m_Timer;
+		float m_Duration;
+		GD::GameObject* m_Projectile;
 	};
 
 	class Charging : public GD::State 
 	{
 	public:
-		Charging() : State(static_cast<unsigned int>( StateID::Charging)) {};
+		Charging(float chargeDuration)
+			: State(static_cast<unsigned int>(StateID::Charging))
+			, m_Duration( chargeDuration)
+			, m_Timer(0)
+		{};
 		~Charging() = default;
 
-		void Update(const GD::GameObject& /*gameObject*/, const GD::Input& /*input*/, float /*elapsedSec*/) override {};
+		GD::State* Update(float elapsedSec) override;
+
+	private:
+		float m_Timer;
+		float m_Duration;
+	};
+
+	class Dying : public GD::State 
+	{
+	public:
+		Dying() : State(static_cast<unsigned int>(StateID::Dying)) {};
+		~Dying() = default;
+
+		GD::State* Update(float /*elapsedSec*/) override { return nullptr; };
 	};
 }

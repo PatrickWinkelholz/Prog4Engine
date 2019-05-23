@@ -3,6 +3,7 @@
 #include "structs.h"
 #include <map>
 #include <vector>
+#include "Entity.h"
 
 namespace GD 
 {
@@ -16,15 +17,20 @@ namespace GD
 	//The GoldDigger engine user can create his own agents (for AI for example), but the basic player input agent is included in the engine 
 	class Agent 
 	{
+		friend Entity::Entity(Behaviour* behaviour, Agent* agent, State* initialState);
 	public:
 		Agent() = default;
 		virtual ~Agent();
 
 		void Initialize( Input* input );
-		virtual void GenerateInput(const GameObject& gameObject, float elapsedSec) = 0;
+		virtual void GenerateInput( const GD::GameObject& gameObject, float elapsedSec) = 0;
 	
 	protected:
 		std::vector<Command*> m_Commands;
+		Entity* GetEntity() const { return m_Entity; };
+
+	private:
+		Entity* m_Entity;
 	};
 
 	class PlayerInputAgent : public GD::Agent
@@ -34,7 +40,7 @@ namespace GD
 		PlayerInputAgent(GD::ControllerIndex index) : m_Index{ index } {};
 		~PlayerInputAgent() = default;
 
-		void GenerateInput(const GameObject& gameObject, float elapsedSec) override;
+		void GenerateInput( const GD::GameObject& gameObject, float elapsedSec) override;
 
 		void AssignButton(GD::ControllerButton button, GD::ButtonState state, GD::Command* command);
 		void AssignAxis(GD::ControllerAxis axis, Command* command);

@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 
-GD::HudText::HudText(Texture* texture, const std::string&& text, const std::string&& font, SDL_Color color)
+GD::HudText::HudText(Texture* texture, const std::string&& text, const std::string&& font, const SDL_Color& color)
 	: m_NeedsUpdate{ true }
 	, m_Text{ text }
 	, m_Font{ nullptr }
@@ -43,6 +43,12 @@ void GD::HudText::Update( float /*deltatime*/ )
 		}
 
 		SDL_FreeSurface(surf);
+
+		int w, h;
+		SDL_QueryTexture(m_Texture->SDLTexture, nullptr, nullptr, &w, &h);
+		m_Texture->sourceRect.botRight.x = static_cast<float>(w);
+		m_Texture->sourceRect.botRight.y = static_cast<float>(h);
+
 		m_NeedsUpdate = false;
 	}
 }

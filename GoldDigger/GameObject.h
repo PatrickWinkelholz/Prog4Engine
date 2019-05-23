@@ -34,7 +34,7 @@ namespace GD
 		template <class T>
 		T* GetComponent() const 
 		{
-			for (int i{}; i < m_Components.size(); i++)
+			for (unsigned int i{}; i < m_Components.size(); i++)
 			{
 				if (typeid(*m_Components[i]) == typeid(T))
 					return dynamic_cast<T*>(m_Components[i]);

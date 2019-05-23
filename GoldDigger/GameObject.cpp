@@ -29,14 +29,14 @@ void GD::GameObject::Initialize()
 void GD::GameObject::Update( float deltaTime )
 {
 	for (BaseComponent* component : m_Components) 
-		component->Update(deltaTime);
+		if (component->GetEnabled())
+			component->Update(deltaTime);
 }
 
 void GD::GameObject::Render() const
 {
 	for (const Texture* texture : m_Textures) 
-		if (texture->enabled)
-			Renderer::GetInstance().RenderTexture(texture->SDLTexture, m_Transform, texture->mode);
+		Renderer::GetInstance().RenderTexture(*texture, m_Transform);
 }
 
 void GD::GameObject::SetPosition(float x, float y, const Grid & grid)
@@ -61,6 +61,6 @@ void GD::GameObject::AddComponent(BaseComponent* component)
 
 GD::Texture* GD::GameObject::CreateTexture(RenderMode mode, bool enabled) 
 {
-	m_Textures.push_back(new Texture{nullptr, mode, enabled});
+	m_Textures.push_back(new Texture{ nullptr, mode, {}, enabled });
 	return m_Textures[m_Textures.size()-1];
 }

@@ -26,4 +26,12 @@ namespace DD
 		void Execute(const GD::GameObject& gameObject, float axisValue = 0) override;
 	};
 
+	class Float : public GD::Command 
+	{
+	public:
+		Float() = default;
+		~Float() = default;
+
+		void Execute(const GD::GameObject& gameObject, float axisValue = 0) override;
+	};
 }

@@ -11,25 +11,25 @@ namespace GD
 {
 	class Renderer final : public Singleton<Renderer>
 	{
-	private:
-		SDL_Renderer* m_Renderer = nullptr;
-		float m_GameScale;
-
 	public:
 		void Init(SDL_Window* window, float gameScale);
 		void Render( float lag );
 		void Destroy();
 
-		void RenderTexture(SDL_Texture* texture, const float xPos, const float yPos, 
-			const float xScale = 1.f, const float yScale = 1.f, GD::RenderMode mode = GD::RenderMode::corner) const;
+		void RenderTexture(const Texture& texture, const float xPos, const float yPos,
+			const float xScale = 1.f, const float yScale = 1.f) const;
 		
-		void RenderTexture(SDL_Texture* texture, const Vector2& pos, const Vector2& scale = {1.f, 1.f},
-			GD::RenderMode mode = GD::RenderMode::corner) const;
+		void RenderTexture(const Texture& texture, const Vector2& pos, 
+			const Vector2& scale = {1.f, 1.f}) const;
 
-		void RenderTexture(SDL_Texture* texture, const Transform& transform, 
-			GD::RenderMode mode = GD::RenderMode::corner) const;
+		void RenderTexture(const Texture& texture, const Transform& transform) const;
 
 		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
+
+	private:
+		SDL_Renderer* m_Renderer = nullptr;
+		float m_GameScale;
+
 	};
 }
 

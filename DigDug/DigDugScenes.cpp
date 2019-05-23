@@ -2,12 +2,14 @@
 #include "DigDugScenes.h"
 //#include <GameObject.h>
 #include <Components.h>
+#include <Structs.h>
 
 #include "DigDug.h"
 #include "DigDugAgents.h"
 #include "DigDugCommands.h"
 #include "DigDugBehaviours.h"
 #include "DigDugStates.h"
+#include "DigDugPrefabs.h"
 
 using namespace GD;
 
@@ -81,53 +83,20 @@ void DD::Level1Scene::Load()
 	go_FPSCounter->AddComponent(new FPSCounter(fpsHudText));
 	go_FPSCounter->SetScale(1.f / 3.f, 1.f / 3.f);
 
-	GameObject* go_DigDug = CreateGameObject();
-	go_DigDug->AddComponent(new Sprite(go_DigDug->CreateTexture(), "DigDugTemp"));
-	PlayerInputAgent* digDugAgent = new PlayerInputAgent(GD::ControllerIndex::Keyboard);
-	digDugAgent->AssignAxis(GD::ControllerAxis::LeftStickX, new MoveHorizontal());
-	digDugAgent->AssignAxis(GD::ControllerAxis::LeftStickY, new MoveVertical());
-	digDugAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Attack());
-	go_DigDug->AddComponent(new Entity(new DigDugBehaviour(), digDugAgent, new Idle()));
-	go_DigDug->AddComponent(new Physics(40.f));
-	go_DigDug->AddComponent(new GridSnap(grid));
+	GameObject* go_DigDug = DD::DigDugPrefabs::CreateDigDug( *this, GD::ControllerIndex::Keyboard );
 	go_DigDug->SetPosition(6.f, 0.f, grid);
 
 	if (gameMode == GameMode::Coop) 
 	{
-		GameObject* go_DigDug2 = CreateGameObject();
-		go_DigDug2->AddComponent(new Sprite(go_DigDug2->CreateTexture(), "DigDugTemp"));
-		PlayerInputAgent* digDug2Agent = new PlayerInputAgent(GD::ControllerIndex::One);
-		digDug2Agent->AssignAxis(GD::ControllerAxis::LeftStickX, new MoveHorizontal());
-		digDug2Agent->AssignAxis(GD::ControllerAxis::LeftStickY, new MoveVertical());
-		digDug2Agent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Attack());
-		go_DigDug2->AddComponent(new Entity(new DigDugBehaviour(), digDug2Agent, new Idle()));
-		go_DigDug2->AddComponent(new Physics(40.f));
-		go_DigDug2->AddComponent(new GridSnap(grid));
+		GameObject* go_DigDug2 = DD::DigDugPrefabs::CreateDigDug(*this, GD::ControllerIndex::One);
 		go_DigDug2->SetPosition(6.f, 1.f, grid);
 	}
-
-	GameObject* go_Pooka = CreateGameObject();
-	go_Pooka->AddComponent(new Sprite(go_Pooka->CreateTexture(), "PookaTemp"));
-	go_Pooka->AddComponent(new Entity(new EnemyBehaviour(), new EnemyBaseAgent(), new Idle()));
-	go_Pooka->AddComponent(new Physics(40.f));
-	go_Pooka->AddComponent(new GridSnap(grid));
+	
+	GameObject* go_Pooka = DD::DigDugPrefabs::CreatePooka(*this);
 	go_Pooka->SetPosition(5.f, 6.f, grid);
 
-	GameObject* go_Fygar = CreateGameObject();
-	go_Fygar->AddComponent(new Sprite(go_Fygar->CreateTexture(), "FygarTemp"));
-	if (gameMode == GameMode::Versus) 
-	{
-		PlayerInputAgent* fygarPlayerAgent = new PlayerInputAgent(ControllerIndex::One);
-		fygarPlayerAgent->AssignAxis(ControllerAxis::LeftStickX, new MoveHorizontal());
-		fygarPlayerAgent->AssignAxis(ControllerAxis::LeftStickY, new MoveVertical());
-		fygarPlayerAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Attack());
-		go_Fygar->AddComponent(new Entity(new EnemyBehaviour(), fygarPlayerAgent, new Idle()));
-	}
-	else
-		go_Fygar->AddComponent(new Entity(new EnemyBehaviour(), new FygarAgent(), new Idle()));
-
-	go_Fygar->AddComponent(new Physics(40.f));
-	go_Fygar->AddComponent(new GridSnap(grid));
+	GameObject* go_Fygar = DD::DigDugPrefabs::CreateFygar(*this,
+		gameMode == GameMode::Versus ? GD::ControllerIndex::One : GD::ControllerIndex::Any);
 	go_Fygar->SetPosition(2.f, 8.f, grid);
 }
 

@@ -12,5 +12,10 @@ void DD::StartGame::Execute(const GD::GameObject& gameObject, float /*axisValue*
 
 void DD::Attack::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/) 
 {
-	
+	m_Input->attack = true;
+}
+
+void DD::Float::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/) 
+{
+	m_Input->startFloat = true;
 }

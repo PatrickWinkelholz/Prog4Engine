@@ -32,32 +32,51 @@ void GD::Renderer::Destroy()
 	}
 }
 
-void GD::Renderer::RenderTexture(SDL_Texture* texture, const float xPos, const float yPos, 
-	const float xScale, const float yScale, GD::RenderMode mode) const
+void GD::Renderer::RenderTexture(const Texture& texture, const float xPos, const float yPos, 
+	const float xScale, const float yScale) const
 {
-	SDL_Rect dst;
-	dst.x = static_cast<int>(xPos * m_GameScale);
-	dst.y = static_cast<int>(yPos * m_GameScale);
-	SDL_QueryTexture(texture, nullptr, nullptr, &dst.w, &dst.h);
-	dst.w = static_cast<int>(dst.w * m_GameScale * xScale);
-	dst.h = static_cast<int>(dst.h * m_GameScale * yScale);
-
-	if (mode == RenderMode::center) 
+	if (texture.enabled) 
 	{
-		dst.x -= static_cast<int>(dst.w / 2.f);
-		dst.y -= static_cast<int>(dst.h / 2.f);
+		SDL_Rect dst;
+		dst.x = static_cast<int>(xPos * m_GameScale);
+		dst.y = static_cast<int>(yPos * m_GameScale);
+
+		SDL_Rect src;
+
+		if (texture.sourceRect.width != 0) 
+		{
+			src.x = static_cast<int>(texture.sourceRect.topLeft.x);
+			src.y = static_cast<int>(texture.sourceRect.topLeft.y);
+			src.w = static_cast<int>(texture.sourceRect.width);
+			src.h = static_cast<int>(texture.sourceRect.height);
+			dst.w = static_cast<int>(src.w * m_GameScale * xScale);
+			dst.h = static_cast<int>(src.h * m_GameScale * yScale);
+		}
+		else 
+		{
+			SDL_QueryTexture(texture.SDLTexture, nullptr, nullptr, &dst.w, &dst.h);
+			dst.w = static_cast<int>(dst.w * m_GameScale * xScale);
+			dst.h = static_cast<int>(dst.h * m_GameScale * yScale);
+		}
+		
+		if (texture.mode == RenderMode::center)
+		{
+			dst.x -= static_cast<int>(dst.w / 2.f);
+			dst.y -= static_cast<int>(dst.h / 2.f);
+		}
+
+		SDL_RenderCopy(GetSDLRenderer(), texture.SDLTexture, texture.sourceRect.width != 0 ? &src : nullptr, &dst);
 	}
-	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
 }
 
-void GD::Renderer::RenderTexture(SDL_Texture* texture, const Vector2& pos, 
-	const Vector2& scale, GD::RenderMode mode) const
+void GD::Renderer::RenderTexture(const Texture& texture, const Vector2& pos, 
+	const Vector2& scale) const
 {
-	RenderTexture(texture, pos.x, pos.y, scale.x, scale.y, mode);
+	RenderTexture(texture, pos.x, pos.y, scale.x, scale.y);
 }
 
-void GD::Renderer::RenderTexture(SDL_Texture* texture, 
-	const Transform& transform, GD::RenderMode mode) const
+void GD::Renderer::RenderTexture(const Texture& texture, 
+	const Transform& transform) const
 {
-	RenderTexture(texture, transform.pos.x, transform.pos.y, transform.scale.x, transform.scale.y, mode);
+	RenderTexture(texture, transform.pos.x, transform.pos.y, transform.scale.x, transform.scale.y);
 }

@@ -75,6 +75,8 @@ namespace GD
 	{
 		Vector2 topLeft;
 		Vector2 botRight;
+		float width { botRight.x - topLeft.x };
+		float height{ botRight.y - topLeft.y };
 	};
 
 	struct Transform
@@ -103,6 +105,7 @@ namespace GD
 	{
 		SDL_Texture* SDLTexture;
 		RenderMode mode;
+		Rect sourceRect;
 		bool enabled;
 	};
 
@@ -119,18 +122,16 @@ namespace GD
 	struct Input
 	{
 		Vector2 movement{};
+		//TODO: move this to digdug
 		bool attack = false;
+		bool startFloat = false;
 	};
 
-	class State 
+	struct Animation
 	{
-	public:
-		State() = default;
-		virtual ~State() = default;
-
-		virtual void Enter() = 0;
-		virtual void Update(const GameObject& gameObject, const Input& input, float elapsedSec) = 0;
-		virtual void Exit() = 0;
+		unsigned int nrFrames;
+		float frameTime;
+		Rect allFrames;
 	};
 
 	enum class ControllerAxis

@@ -20,8 +20,6 @@ namespace GD
 		void Render() const;
 		
 		virtual void Load() = 0;
-
-	protected:
 		GameObject* CreateGameObject();
 
 	private: 

@@ -1,6 +1,17 @@
 #include "GoldDiggerPCH.h"
 #include "Entity.h"
 #include "Agents.h"
+#include "GameObject.h"
+#include "Components.h"
+
+void GD::State::Enter(const GameObject& gameObject) 
+{
+	GD::Sprite* sprite = gameObject.GetComponent<Sprite>();
+	if (sprite) 
+	{
+		sprite->PlayAnimation(m_ID);
+	}
+}
 
 GD::Entity::~Entity() 
 {
@@ -16,15 +27,14 @@ void GD::Entity::Initialize()
 
 void GD::Entity::Update(float elapsedSec)
 {
-	//isn't this beautiful?
 	m_Agent->GenerateInput(*m_GameObject, elapsedSec);
-	GD::State* state = m_Behaviour->HandleInput( m_Input);
+	GD::State* state = m_Behaviour->HandleInput( m_Input, m_State->GetID());
 	if (state)
 	{
-		m_State->Exit();
+		m_State->Exit( *m_GameObject );
 		delete m_State;
 		m_State = state;
-		m_State->Enter();
+		m_State->Enter( *m_GameObject );
 	}
 	m_State->Update( *m_GameObject, m_Input, elapsedSec);
 }

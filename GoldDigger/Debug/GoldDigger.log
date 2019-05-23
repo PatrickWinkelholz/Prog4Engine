@@ -1,17 +1,12 @@
-﻿  GoldDiggerPCH.cpp
-  Audio.cpp
-  FPSCounter.cpp
+﻿  Commands.cpp
+  Entity.cpp
   GameObject.cpp
   GridSnap.cpp
   HudText.cpp
-  InputManager.cpp
-  Locator.cpp
-  GoldDigger.cpp
-  Renderer.cpp
-  ResourceManager.cpp
+  MenuButton.cpp
+  Physics.cpp
   Scene.cpp
   SceneManager.cpp
-  Texture.cpp
   Generating Code...
   GoldDigger.vcxproj -> C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\Debug\GoldDigger.lib
   C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2\lib\x86\SDL2.dll

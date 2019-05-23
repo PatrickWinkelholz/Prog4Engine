@@ -19,6 +19,18 @@ namespace DD
 
 	struct DigDugInput : GD::Input 
 	{
-		bool attack;
+		bool attack = false;
+		bool startFloat = false;
+	};
+
+	enum class StateID : unsigned int 
+	{
+		Idle = 0,
+		Walking,
+		Dying,
+		Pumping,
+		Floating,
+		Charging,
+		BreathingFire
 	};
 }

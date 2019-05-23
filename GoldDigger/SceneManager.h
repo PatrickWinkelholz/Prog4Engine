@@ -20,6 +20,8 @@ namespace GD
 		void FixedUpdate();
 		void Render();
 
+		GD::Scene* GetActiveScene() const { return m_ActiveScene; };
+
 	private:
 		std::map<unsigned int, Scene*> m_Scenes;
 		GD::Scene* m_ActiveScene;

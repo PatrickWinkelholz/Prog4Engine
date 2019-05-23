@@ -6,16 +6,29 @@ namespace GD
 {
 	class Agent;
 
+	class State
+	{
+	public:
+		State(unsigned int id) : m_ID{ id } {};
+		virtual ~State() = default;
+
+		virtual void Enter(const GameObject& gameObject);
+		virtual void Update(const GameObject& gameObject, const Input& input, float elapsedSec) = 0;
+		virtual void Exit(const GameObject& /*gameObject*/) {};
+
+		unsigned int GetID() { return m_ID; };
+
+	protected:
+		unsigned int m_ID;
+	};
+
 	class EntityBehaviour
 	{
 	public:
 		EntityBehaviour() = default;
 		virtual ~EntityBehaviour() = default;
 
-		virtual GD::State* HandleInput( const Input& input ) = 0;
-	
-	protected:
-		Input m_PreviousInput;
+		virtual GD::State* HandleInput( Input& input, unsigned int stateID) = 0;
 	};
 
 	class Entity : public BaseComponent

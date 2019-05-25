@@ -179,7 +179,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformShortName)\*.dll"  "$(Outpu
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Achievements.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="Collider.h" />

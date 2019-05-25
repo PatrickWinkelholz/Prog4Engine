@@ -83,7 +83,6 @@ namespace GD
 	{
 		Vector2 pos;
 		Vector2 scale = {1.f, 1.f};
-		float zOrder;
 	};
 
 	struct Grid 
@@ -91,14 +90,18 @@ namespace GD
 		Rect bounds;
 		int rows;
 		int cols;
-		Vector2 dimensions = { bounds.botRight.x - bounds.topLeft.x, bounds.botRight.y - bounds.topLeft.y };
-		Vector2 tileDimensions = { dimensions.x / float(rows), dimensions.y / float(cols) };
+
+		inline Vector2 GetDimensions() const { return bounds.botRight - bounds.topLeft; };
+		inline float GetTileWidth() const { return (bounds.botRight.x - bounds.topLeft.x) / float(rows); };
+		inline float GetTileHeight() const { return (bounds.botRight.y - bounds.topLeft.y) / float(cols); };
+		inline Vector2 GetTileDimensions() const { return { GetTileWidth(), GetTileHeight() }; };
 	};
 
 	enum class RenderMode 
 	{
 		corner,
-		center
+		center,
+		centerLeft
 	};
 
 	struct Texture

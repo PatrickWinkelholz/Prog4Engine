@@ -13,6 +13,28 @@ void GD::State::Enter()
 	}
 }
 
+void GD::MoveState::Enter()
+{
+	m_Physics = GetEntity()->m_GameObject->GetComponent<GD::Physics>();
+	GD::State::Enter();
+}
+
+GD::State* GD::MoveState::Update(float /*elapsedSec*/)
+{
+	float moveLength{ GetEntity()->GetInput().movement.LengthSquared() };
+
+	if (m_Physics)
+		m_Physics->SetMoveDirection(GetEntity()->GetInput().movement);
+
+	return nullptr;
+}
+
+void GD::MoveState::Exit()
+{
+	if (m_Physics)
+		m_Physics->SetMoveDirection({ 0, 0 });
+}
+
 GD::Entity::Entity(Behaviour* behaviour, Agent* agent, State* initialState)
 	: m_Behaviour{ behaviour }
 	, m_Agent{ agent }

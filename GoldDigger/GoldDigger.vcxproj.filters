@@ -95,9 +95,6 @@
     <ClInclude Include="Observer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Achievements.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Agents.h">
       <Filter>Source Files</Filter>
     </ClInclude>

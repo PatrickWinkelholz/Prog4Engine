@@ -17,7 +17,7 @@ const int DD::DigDug::m_Rows{ 14 };
 const int DD::DigDug::m_Cols{ 18 };
 const GD::Vector2 DD::DigDug::m_TileDimensions{ DigDug::m_Dimensions.x / float(m_Rows), DigDug::m_Dimensions.y / float(m_Cols) };
 
-const GD::Grid DD::DigDug::m_Grid{ {{0, m_TileDimensions.y * 2.f}, {m_Dimensions.x, m_Dimensions.y - m_TileDimensions.y}}, m_Rows, m_Cols - 3 };
+const GD::Grid DD::DigDug::m_Grid{ {{0, m_TileDimensions.y * 3.f}, {m_Dimensions.x, m_Dimensions.y - m_TileDimensions.y}}, m_Rows, m_Cols - 4 };
 
 DD::DigDug::DigDug() : GoldDiggerGame(m_Dimensions, 16, 3.f, 0.02f)
 {
@@ -62,6 +62,7 @@ void DD::DigDug::LoadResources()
 	//loading Sprites
 	GD::ResourceManager::GetInstance().LoadTexture("Title.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Rock.png");
+	GD::ResourceManager::GetInstance().LoadTexture("Tunnel.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Projectile.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Fire.png");
 	GD::ResourceManager::GetInstance().LoadTexture("DigDug.png");

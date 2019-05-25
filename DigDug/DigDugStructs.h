@@ -27,10 +27,20 @@ namespace DD
 	{
 		Idle = 0,
 		Walking,
+		Digging,
 		Dying,
 		Pumping,
 		Floating,
 		Charging,
-		Attacking
+		Attacking,
+		Pumped
+	};
+
+	enum class Layer : unsigned int 
+	{
+		Background = 0,
+		Tunnel,
+		Foreground,
+		HUD
 	};
 }

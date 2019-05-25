@@ -15,8 +15,11 @@ namespace DD
 		EnemyBehaviour() = default;
 		~EnemyBehaviour() = default;
 
-		void Initialize() override {};
+		void Initialize() override;
 		GD::State* HandleInput() override;
+
+	private:
+		GD::Collider* m_Collider;
 	};
 
 	class DigDugBehaviour : public GD::Behaviour 

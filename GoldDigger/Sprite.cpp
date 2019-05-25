@@ -60,3 +60,8 @@ void GD::Sprite::ResetAnimation()
 	m_Texture->sourceRect.botRight.x = anim.allFrames.topLeft.x + anim.GetFrameWidth();
 	m_Texture->sourceRect.botRight.y = anim.allFrames.botRight.y;
 }
+
+void GD::Sprite::SetRenderMode(RenderMode mode) 
+{
+	m_Texture->mode = mode;
+}

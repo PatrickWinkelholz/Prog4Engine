@@ -7,22 +7,18 @@ namespace GD
 {
 	class Physics;
 	class GameObject;
+	class Collider;
 }
 
 namespace DD 
 {
-	class Walking : public GD::State 
+	class Walking : public GD::MoveState 
 	{
 	public:
-		Walking() : State( static_cast<unsigned int>( StateID::Walking ) ), m_Physics( nullptr ) {};
+		Walking() : MoveState( static_cast<unsigned int>( StateID::Walking ) ) {};
 		~Walking() = default;
 
-		void Enter() override;
 		GD::State* Update(float elapsedSec) override;
-		void Exit() override;
-	
-	private:
-		GD::Physics* m_Physics;
 	};
 
 	class Idle : public GD::State 
@@ -35,26 +31,33 @@ namespace DD
 		GD::State* Update(float elapsedSec) override;
 	};
 
-	class Floating : public GD::State 
+	class Digging : public GD::MoveState 
 	{
 	public:
-		Floating() : State(static_cast<unsigned int>( StateID::Floating)) {};
+		Digging() : MoveState(static_cast<unsigned int>( StateID::Digging)) {};
+		~Digging() = default;
+
+		void Enter() override;
+		GD::State* Update(float elapsedSec) override;
+	
+	private:
+		GD::GameObject* m_LastTunnel;
+		GD::Collider* m_Collider;
+	};
+
+	class Floating : public GD::MoveState 
+	{
+	public:
+		Floating() : MoveState(static_cast<unsigned int>( StateID::Floating)) {};
 		~Floating() = default;
 
 		void Enter() override;
 		GD::State* Update(float elapsedSec) override;
 		void Exit() override;
+	
 	private:
-		GD::Physics* m_Physics;
-	};
-
-	class Pumping : public GD::State 
-	{
-	public:
-		Pumping() : State(static_cast<unsigned int>( StateID::Pumping)) {};
-		~Pumping() = default;
-
-		GD::State* Update(float /*elapsedSec*/) override { return nullptr; };
+		float m_Timer;
+		GD::Collider* m_Collider;
 	};
 
 	class Attacking : public GD::State 
@@ -68,12 +71,29 @@ namespace DD
 		{};
 		~Attacking() = default;
 
+		void Enter() override;
 		GD::State* Update(float elapsedSec) override;
 		void Exit() override;
 
 	private:
 		float m_Timer;
 		float m_Duration;
+		GD::GameObject* m_Projectile;
+		GD::Collider* m_ProjectileCollider;
+	};
+
+	class Pumping : public GD::State 
+	{
+	public:
+		Pumping(GD::GameObject* projectile)
+			: State(static_cast<unsigned int>(StateID::Pumping))
+			, m_Projectile(projectile)
+		{};
+
+		GD::State* Update(float elapsedSec) override;
+		void Exit() override;
+
+	private:
 		GD::GameObject* m_Projectile;
 	};
 
@@ -101,5 +121,16 @@ namespace DD
 		~Dying() = default;
 
 		GD::State* Update(float /*elapsedSec*/) override { return nullptr; };
+	};
+
+	class Pumped : public GD::State 
+	{
+	public:
+		Pumped() : State(static_cast<unsigned int>(StateID::Pumped)) {};
+		~Pumped() = default;
+
+		void Enter() override;
+		GD::State* Update(float /*elapsedSec*/) override { return nullptr; };
+		void Exit() override;
 	};
 }

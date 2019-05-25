@@ -21,6 +21,7 @@ namespace GD
 		void Update(float deltaTime);
 		void AddAnimation(unsigned int id, const Animation& animation);
 		void PlayAnimation(unsigned int id);
+		void SetRenderMode(RenderMode mode);
 
 	private:
 		void ResetAnimation(); //moves the textures sourcerect back to the first frame

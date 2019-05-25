@@ -9,18 +9,21 @@
 #include <Scene.h>
 #include <Structs.h>
 
+void DD::EnemyBehaviour::Initialize()
+{
+	m_Collider = GetEntity()->m_GameObject->GetComponent<GD::Collider>();
+}
+
 GD::State* DD::EnemyBehaviour::HandleInput() 
 {
 	StateID state = static_cast<StateID>(GetEntity()->GetState()->GetID());
-		
-	if (GetEntity()->GetInput().startFloat)
-	{
-		if (state == StateID::Walking || state == StateID::Idle)
-			return new Floating();
 
-		if (state == StateID::Floating)
-			return new Idle();
-	}
+	if (m_Collider)
+		if (m_Collider->CollidesWith("projectile"))
+			return new Pumped();
+
+	if (GetEntity()->GetInput().startFloat && (state == StateID::Walking || state == StateID::Idle))
+		return new Floating();
 
 	if (GetEntity()->GetInput().attack && (state == StateID::Walking || state == StateID::Idle))
 	{
@@ -45,12 +48,18 @@ GD::State* DD::DigDugBehaviour::HandleInput()
 			return new Dying();
 	}
 
+	if (m_Collider && state == StateID::Walking) 
+	{
+		if (!m_Collider->IsInside("tunnel"))
+			return new Digging();
+	}
+
 	if (GetEntity()->GetInput().attack && (state == StateID::Walking || state == StateID::Idle))
 	{
-		GD::GameObject* go_Projectile = GD::SceneManager::GetInstance().GetActiveScene()->CreateGameObject();
+		GD::GameObject* go_Projectile = GD::SceneManager::GetInstance().GetActiveScene()->CreateGameObject( static_cast<unsigned int>(Layer::Foreground) );
 		GD::Texture* projectileTexture = go_Projectile->CreateTexture();
 		go_Projectile->AddComponent(new GD::Sprite(projectileTexture, "Projectile"));
-		go_Projectile->AddComponent(new GD::Collider(projectileTexture, "projectile"));
+		go_Projectile->AddComponent(new GD::Collider(projectileTexture, "projectile", 2.0f));
 		GD::Physics* physics = new GD::Physics(50.f, false);
 		physics->SetMoveDirection({ 50.f, 0 });
 		go_Projectile->AddComponent(physics);

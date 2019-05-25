@@ -19,5 +19,7 @@ namespace DD
 		static GD::GameObject* CreateDigDug( GD::Scene& scene, GD::ControllerIndex index );
 		static GD::GameObject* CreatePooka( GD::Scene& scene, GD::ControllerIndex index = GD::ControllerIndex::Any );
 		static GD::GameObject* CreateFygar( GD::Scene& scene, GD::ControllerIndex index = GD::ControllerIndex::Any );
+		static GD::GameObject* CreateTunnel( GD::Scene& scene );
+		static void GenerateTunnels(GD::Scene& scene, const GD::Vector2& start, const GD::Vector2& direction, int length, const GD::Grid& grid = {});
 	};
 }

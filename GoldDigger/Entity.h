@@ -7,6 +7,7 @@ namespace GD
 	class Agent;
 	class Behaviour;
 	class State;
+	class Physics;
 
 	class Entity : public BaseComponent
 	{
@@ -50,6 +51,20 @@ namespace GD
 
 	private:
 		Entity* m_Entity;
+	};
+
+	class MoveState : public State
+	{
+	public: 
+		MoveState(unsigned int id) : State(id) {};
+		virtual ~MoveState() = default;
+
+		virtual void Enter() override;
+		virtual GD::State* Update(float elapsedSec) override;
+		virtual void Exit() override;
+
+	protected:
+		GD::Physics* m_Physics;
 	};
 
 	class Behaviour

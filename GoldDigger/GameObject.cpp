@@ -7,7 +7,7 @@
 
 GD::GameObject::GameObject() 
 	: m_Components{ }
-	, m_Transform{ {0, 0}, {1.f, 1.f}, 0 }
+	, m_Transform{ {0, 0}, {1.f, 1.f} }
 	, m_Destroyed{ false }
 {
 
@@ -55,8 +55,8 @@ void GD::GameObject::SetPosition(float x, float y, const Grid & grid)
 {
 	if (grid.cols > 0 && grid.rows > 0)
 	{
-		m_Transform.pos.x = grid.bounds.topLeft.x + grid.tileDimensions.x * x;
-		m_Transform.pos.y = grid.bounds.topLeft.y + grid.tileDimensions.y * y;
+		m_Transform.pos.x = grid.bounds.topLeft.x + grid.GetTileWidth() * x;
+		m_Transform.pos.y = grid.bounds.topLeft.y + grid.GetTileHeight() * y;
 	}
 	else 
 	{

@@ -1,6 +1,7 @@
 #include "GoldDiggerPCH.h"
 #include "Commands.h"
 #include "SceneManager.h"
+#include "Scene.h"
 #include "Components.h"
 #include "GameObject.h"
 
@@ -16,6 +17,7 @@ void GD::MoveVertical::Execute(const GD::GameObject& /*gameObject*/, float axisV
 
 void GD::SwitchScene::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/)
 {
+	GD::SceneManager::GetInstance().ClearCurrentScene();
 	GD::SceneManager::GetInstance().LoadScene(m_SceneID);
 	GD::SceneManager::GetInstance().SwitchScene(m_SceneID);
 }

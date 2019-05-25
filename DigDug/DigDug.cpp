@@ -46,6 +46,7 @@ void DD::DigDug::Initialize()
 	map.A = SDL_SCANCODE_SPACE;
 	map.X = SDL_SCANCODE_E;
 	map.Start = SDL_SCANCODE_RETURN;
+	map.Back = SDL_SCANCODE_ESCAPE;
 	GD::InputManager::GetInstance().MapKeyboard( map );
 
 	GD::SceneManager::GetInstance().LoadScene(static_cast<unsigned int>(Scenes::Menu));

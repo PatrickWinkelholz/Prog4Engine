@@ -117,7 +117,7 @@ GD::State* DD::Charging::Update(float elapsedSec)
 		go_Fire->AddComponent(new GD::Collider(FireTexture, "enemy"));
 		GD::Vector2 pos = GetEntity()->m_GameObject->GetPosition();
 		go_Fire->SetPosition({ pos.x + 16.f, pos.y });
-		return new Attacking(0.8f, go_Fire);
+		return new Attacking(0.75f, go_Fire);
 	}
 	return nullptr;
 }
@@ -126,6 +126,7 @@ void DD::Attacking::Enter()
 {
 	if (m_Projectile)
 		m_ProjectileCollider = m_Projectile->GetComponent<GD::Collider>();
+	GD::State::Enter();
 }
 
 GD::State* DD::Attacking::Update(float elapsedSec) 
@@ -141,7 +142,7 @@ GD::State* DD::Attacking::Update(float elapsedSec)
 			m_ProjectileCollider->UpdateCollisionBox();
 			if (m_ProjectileCollider->CollidesWith("enemy")) 
 			{
-				Pumping* pumping = new Pumping(m_Projectile);
+				Pumping* pumping = new Pumping(m_ProjectileCollider);
 				GD::Physics* projectilePhysics = m_Projectile->GetComponent<GD::Physics>();
 				if (projectilePhysics)
 					projectilePhysics->SetMoveDirection(GD::Vector2{ 0, 0 });
@@ -164,25 +165,56 @@ void DD::Attacking::Exit()
 
 GD::State* DD::Pumping::Update(float /*elapsedSec*/) 
 {
+	float moveLength{ GetEntity()->GetInput().movement.LengthSquared() };
+
+	if (moveLength > 0)
+		return new Walking();
+
+	if (m_ProjectileCollider)
+		if (!m_ProjectileCollider->CollidesWith("enemy"))
+			return new Idle();
+
 	return nullptr;
 }
 
 void DD::Pumping::Exit() 
 {
-	if (m_Projectile)
-		m_Projectile->Destroy();
+	if (m_ProjectileCollider)
+		m_ProjectileCollider->m_GameObject->Destroy();
 }
 
 void DD::Pumped::Enter() 
 {
-	/*GD::Sprite* sprite = GetEntity()->m_GameObject->GetComponent<GD::Sprite>();
-	if (sprite)
-		sprite->SetRenderMode(GD::RenderMode::centerLeft);*/
+	m_Collider = GetEntity()->m_GameObject->GetComponent<GD::Collider>();
+	m_Sprite = GetEntity()->m_GameObject->GetComponent<GD::Sprite>();
+	if (m_Sprite)
+		m_Sprite->SetRenderMode(GD::RenderMode::centerLeft);
+	GD::State::Enter();
+}
+
+GD::State* DD::Pumped::Update(float/* elapsedSec*/) 
+{
+	if (m_Collider && m_Sprite) 
+	{
+		if (static_cast<bool>(m_Collider->CollidesWith("projectile")) != m_Inflating) 
+		{
+			m_Sprite->ReverseAnimation();
+			m_Inflating = !m_Inflating;
+		}
+
+		if (m_Sprite->GetTimer() < -0.5f) 
+		{
+			if (m_Inflating)
+				GetEntity()->m_GameObject->Destroy();
+			else
+				return new Idle();
+		}
+	}	
+	return nullptr;
 }
 
 void DD::Pumped::Exit() 
 {
-	/*GD::Sprite* sprite = GetEntity()->m_GameObject->GetComponent<GD::Sprite>();
-	if (sprite)
-		sprite->SetRenderMode(GD::RenderMode::corner);*/
+	if (m_Sprite)
+		m_Sprite->SetRenderMode(GD::RenderMode::corner);
 }

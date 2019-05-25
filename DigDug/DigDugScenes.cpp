@@ -65,14 +65,28 @@ void DD::Level1Scene::Load()
 	go_FPSCounter->AddComponent(new FPSCounter(fpsHudText));
 	go_FPSCounter->SetScale(1.f / 3.f, 1.f / 3.f);
 
-	GameObject* go_DigDug = DD::DigDugPrefabs::CreateDigDug( *this, GD::ControllerIndex::Keyboard );
+	//scene controller
+	GameObject* go_PlayerController = CreateGameObject(0);
+	PlayerInputAgent* playerInput = new PlayerInputAgent(ControllerIndex::Any);
+	playerInput->AssignButton(GD::ControllerButton::Back, GD::ButtonState::Pressed, 
+		new SwitchScene(static_cast<unsigned int>(Scenes::Menu)));
+	go_PlayerController->AddComponent(new Controller(playerInput));
+
+	GD::ControllerIndex digDugControlIndex = GD::ControllerIndex::Keyboard;
+	if (gameMode == GameMode::SinglePlayer)
+		digDugControlIndex = GD::ControllerIndex::Any;
+
+	GameObject* go_DigDug = DD::DigDugPrefabs::CreateDigDug( *this, digDugControlIndex );
 	go_DigDug->SetPosition(6.f, 0.f, grid);
 
+	int startTunnels = 1;
 	if (gameMode == GameMode::Coop) 
 	{
 		GameObject* go_DigDug2 = DD::DigDugPrefabs::CreateDigDug(*this, GD::ControllerIndex::One);
 		go_DigDug2->SetPosition(6.f, 1.f, grid);
+		startTunnels = 5;
 	}
+	DigDugPrefabs::GenerateTunnels(*this, { 6.f, 0.f }, { 0, 1.f }, startTunnels, grid);
 	
 	DigDugPrefabs::GenerateTunnels(*this, { 4.f, 6.f }, { 1.f, 0 }, 24, grid);
 

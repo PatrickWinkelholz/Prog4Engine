@@ -55,6 +55,10 @@ void GD::Renderer::RenderTexture(const Texture& texture, const float xPos, const
 		dst.x -= static_cast<int>(dst.w / 2.f);
 		dst.y -= static_cast<int>(dst.h / 2.f);
 	}
+	else if (texture.mode == RenderMode::centerLeft)
+	{
+		dst.y -= static_cast<int>(dst.h / 2.f);
+	}
 
 	SDL_RenderCopy(GetSDLRenderer(), texture.SDLTexture, texture.sourceRect.GetWidth() != 0 ? &src : nullptr, &dst);
 }

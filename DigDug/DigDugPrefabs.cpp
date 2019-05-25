@@ -57,8 +57,8 @@ GD::GameObject* DD::DigDugPrefabs::CreatePooka(GD::Scene& scene, GD::ControllerI
 	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Idle), Animation{ 1, 0, { {0, 0}, {16.f, 16.f} } });
 	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Walking), Animation{ 2, 0.25f, { {0, 0}, {32.f, 16.f} } });
 	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Floating), Animation{ 2, 0.25f, { {48.f, 0}, {80.f, 16.f} } });
-	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Dying), Animation{ 1, 0, { {80.f, 0}, {96.f, 16.f} } });
-	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Pumped), Animation{ 4, 0.5f, { {0, 16.f}, {128.f, 48.f} } });
+	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Dying), Animation{ 1, 3.f, { {80.f, 0}, {96.f, 16.f} }, false });
+	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Pumped), Animation{ 4, 0.5f, { {0, 16.f}, {128.f, 48.f} }, false });
 	Collider* pookaCollider = new Collider(pookaTexture, "enemy", 2.0f);
 	go_Pooka->AddComponent( pookaCollider );
 	go_Pooka->AddComponent(pookaSprite);
@@ -87,10 +87,10 @@ GD::GameObject * DD::DigDugPrefabs::CreateFygar(GD::Scene& scene, GD::Controller
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Idle), Animation{ 1, 0, { {0, 0}, {16.f, 16.f} } });
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Walking), Animation{ 2, 0.25f, { {0, 0}, {32.f, 16.f} } });
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Floating), Animation{ 2, 0.25f, { {48.f, 0}, {80.f, 16.f} } });
-	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Dying), Animation{ 1, 0, { {80.f, 0}, {96.f, 16.f} } });
+	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Dying), Animation{ 1, 3.0f, { {80.f, 0}, {96.f, 16.f} }, false });
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Attacking), Animation{ 1, 0, { {32.f, 0}, {48.f, 16.f} } });
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Charging), Animation{ 2, 0.09f, { {16.f, 0}, {48.f, 16.f} } });
-	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Pumped), Animation{ 4, 0.5f, { {0, 16.f}, {128.f, 48.f} } });
+	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Pumped), Animation{ 4, 0.6f, { {0, 16.f}, {128.f, 48.f} }, false });
 	Collider* fygarCollider = new Collider(fygarTexture, "enemy", 2.0f);
 	go_Fygar->AddComponent(fygarCollider);
 	go_Fygar->AddComponent(fygarSprite);

@@ -8,6 +8,7 @@ namespace GD
 	class Physics;
 	class GameObject;
 	class Collider;
+	class Sprite;
 }
 
 namespace DD 
@@ -85,16 +86,16 @@ namespace DD
 	class Pumping : public GD::State 
 	{
 	public:
-		Pumping(GD::GameObject* projectile)
+		Pumping(GD::Collider* projectileCollider)
 			: State(static_cast<unsigned int>(StateID::Pumping))
-			, m_Projectile(projectile)
+			, m_ProjectileCollider (projectileCollider)
 		{};
 
 		GD::State* Update(float elapsedSec) override;
 		void Exit() override;
 
 	private:
-		GD::GameObject* m_Projectile;
+		GD::Collider* m_ProjectileCollider;
 	};
 
 	class Charging : public GD::State 
@@ -126,11 +127,15 @@ namespace DD
 	class Pumped : public GD::State 
 	{
 	public:
-		Pumped() : State(static_cast<unsigned int>(StateID::Pumped)) {};
+		Pumped() : State(static_cast<unsigned int>(StateID::Pumped)), m_Inflating{true} {};
 		~Pumped() = default;
 
 		void Enter() override;
-		GD::State* Update(float /*elapsedSec*/) override { return nullptr; };
+		GD::State* Update(float elapsedSec) override;
+		GD::Collider* m_Collider;
 		void Exit() override;
+	private:
+		bool m_Inflating;
+		GD::Sprite* m_Sprite;
 	};
 }

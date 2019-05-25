@@ -33,7 +33,7 @@ namespace DD
 		Floating,
 		Charging,
 		Attacking,
-		Pumped
+		Pumped,
 	};
 
 	enum class Layer : unsigned int 

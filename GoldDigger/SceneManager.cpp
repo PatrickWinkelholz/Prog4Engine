@@ -48,6 +48,11 @@ void GD::SceneManager::SwitchScene(unsigned int id)
 	m_ActiveScene = m_Scenes[id];
 }
 
+void GD::SceneManager::ClearCurrentScene()
+{
+	m_ActiveScene->Clear();
+}
+
 void GD::SceneManager::LoadScene(unsigned int id) 
 {
 	if (!m_Scenes[id])

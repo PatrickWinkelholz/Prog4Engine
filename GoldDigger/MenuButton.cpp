@@ -18,6 +18,14 @@ GD::MenuButton::MenuButton( GD::Texture* off, GD::Texture* on, Command* command,
 	
 }
 
+GD::MenuButton::~MenuButton() 
+{
+	if (m_Command) 
+		delete m_Command;
+	if (s_ActiveButton == this)
+		s_ActiveButton = nullptr;
+}
+
 void GD::MenuButton::ExecuteCommand() 
 {
 	Input input{};

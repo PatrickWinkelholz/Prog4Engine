@@ -52,6 +52,18 @@ void GD::Scene::Update(float deltaTime)
 		}
 	}
 	m_DestroyedObjects.clear();
+
+	//clear scene if told
+	if (m_Clear) 
+	{
+		for (auto& pair : m_Objects)
+			for (GameObject* object : pair.second)
+				delete object;		
+		m_NewObjects.clear();
+		m_DestroyedObjects.clear();
+		m_Objects.clear();
+		m_Clear = false;
+	}
 }
 
 void GD::Scene::MergeNewObjects() //Needed to add objects at runtime
@@ -72,4 +84,3 @@ void GD::Scene::Render() const
 		for (const GameObject* gameObject : pair.second)
 			gameObject->Render();
 }
-

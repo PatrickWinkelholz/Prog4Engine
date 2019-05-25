@@ -15,6 +15,7 @@ namespace GD
 		void AddScene( Scene* scene, unsigned int id);
 		void SwitchScene(unsigned int id);
 		void LoadScene(unsigned int id);
+		void ClearCurrentScene();
 
 		void Update(float deltaTime);
 		void FixedUpdate();

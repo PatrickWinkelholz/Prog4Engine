@@ -11,7 +11,7 @@ namespace GD
 	{
 	public:
 		Collider( Texture* texture, const std::string&& tag = "default", float buffer = 0);
-		~Collider();
+		~Collider(  );
 
 		void Initialize() override {};
 		void Update(float elapsedSec) override;

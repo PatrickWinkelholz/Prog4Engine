@@ -20,13 +20,15 @@ void GD::Sprite::Update(float deltaTime)
 		return;
 
 	m_Timer += deltaTime;
+
 	Animation anim = m_Animations[m_ActiveAnimation];
 	if (m_Timer >= anim.frameTime && anim.frameTime > 0)
 	{
 		m_Timer -= anim.frameTime;
-		m_Texture->sourceRect.topLeft.x += anim.GetFrameWidth();
-		m_Texture->sourceRect.botRight.x += anim.GetFrameWidth();
-		if (m_Texture->sourceRect.topLeft.x >= anim.allFrames.botRight.x - 0.001f) 
+		m_Texture->sourceRect.topLeft.x += anim.GetFrameWidth() * (m_Reversed ? -1.f : 1.f);
+		m_Texture->sourceRect.botRight.x += anim.GetFrameWidth() * (m_Reversed ? -1.f : 1.f);
+		if ((m_Texture->sourceRect.topLeft.x >= anim.allFrames.botRight.x - 0.001f && !m_Reversed) 
+			|| (m_Texture->sourceRect.topLeft.x < anim.allFrames.topLeft.x - 0.001f && m_Reversed))
 		{
 			if (anim.loop)
 			{
@@ -47,6 +49,7 @@ void GD::Sprite::PlayAnimation(unsigned int id)
 {
 	if (m_Animations.size() != 0)
 	{
+		m_Reversed = false;
 		m_Timer = 0;
 		m_ActiveAnimation = id;
 		ResetAnimation();
@@ -59,9 +62,19 @@ void GD::Sprite::ResetAnimation()
 	m_Texture->sourceRect.topLeft = anim.allFrames.topLeft;
 	m_Texture->sourceRect.botRight.x = anim.allFrames.topLeft.x + anim.GetFrameWidth();
 	m_Texture->sourceRect.botRight.y = anim.allFrames.botRight.y;
+	if (m_Reversed) 
+	{
+		m_Texture->sourceRect.topLeft.x = anim.allFrames.botRight.x - m_Texture->sourceRect.GetWidth();
+		m_Texture->sourceRect.botRight.x = anim.allFrames.botRight.x;
+	}
 }
 
 void GD::Sprite::SetRenderMode(RenderMode mode) 
 {
 	m_Texture->mode = mode;
+}
+
+void GD::Sprite::ReverseAnimation() 
+{
+	m_Reversed = !m_Reversed;
 }

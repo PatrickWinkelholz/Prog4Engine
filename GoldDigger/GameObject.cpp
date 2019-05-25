@@ -16,9 +16,12 @@ GD::GameObject::GameObject()
 GD::GameObject::~GameObject() 
 {
 	for (BaseComponent* component : m_Components) 
-		delete component;
+		if (component)
+			delete component;
+
 	for (Texture* texture : m_Textures)
-		delete texture;
+		if (texture)
+			delete texture;
 };
 
 void GD::GameObject::Initialize() 

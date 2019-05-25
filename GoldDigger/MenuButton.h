@@ -14,7 +14,7 @@ namespace GD
 
 	public:
 		MenuButton(GD::Texture* off, GD::Texture* on, Command* command, float activeScaleFactor = 1.3f);
-		~MenuButton() { if (m_Command) delete m_Command; };
+		~MenuButton();
 
 		void Initialize() override;
 		void Update(float deltaTime) override;

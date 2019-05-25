@@ -18,7 +18,7 @@ GD::State* DD::EnemyBehaviour::HandleInput()
 {
 	StateID state = static_cast<StateID>(GetEntity()->GetState()->GetID());
 
-	if (m_Collider)
+	if (m_Collider && state != StateID::Pumped)
 		if (m_Collider->CollidesWith("projectile"))
 			return new Pumped();
 

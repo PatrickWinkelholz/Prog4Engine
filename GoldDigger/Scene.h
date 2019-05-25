@@ -9,7 +9,7 @@ namespace GD
 	{
 	public:
 
-		Scene() = default;
+		Scene() : m_Clear{ false } {};
 		virtual ~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -19,6 +19,7 @@ namespace GD
 		void Initialize();
 		void Update(float deltaTime);
 		void Render() const;
+		void Clear() { m_Clear = true; };
 		
 		virtual void Load() = 0;
 		GameObject* CreateGameObject( unsigned int layer = 0);
@@ -31,6 +32,7 @@ namespace GD
 		std::map<unsigned int, std::vector<GameObject*>> m_Objects;
 		std::map<unsigned int, std::vector<GameObject*>> m_NewObjects;
 		std::map<unsigned int, std::vector<GameObject*>> m_DestroyedObjects;
-		//unsigned int m_MaxLayer;
+		
+		bool m_Clear;
 	};
 }

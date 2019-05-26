@@ -14,9 +14,13 @@ void DD::EnemyBehaviour::Initialize()
 	m_Collider = GetEntity()->m_GameObject->GetComponent<GD::Collider>();
 }
 
-GD::State* DD::EnemyBehaviour::HandleInput() 
+GD::State* DD::EnemyBehaviour::HandleInput(float /*elapsedSec*/)
 {
 	StateID state = static_cast<StateID>(GetEntity()->GetState()->GetID());
+
+	if (m_Collider)
+		if (m_Collider->CollidesWith("rock") && state != StateID::Dying)
+			return new Dying();
 
 	if (m_Collider && state != StateID::Pumped)
 		if (m_Collider->CollidesWith("projectile"))
@@ -38,13 +42,13 @@ void DD::DigDugBehaviour::Initialize()
 	m_Collider = GetEntity()->m_GameObject->GetComponent<GD::Collider>();
 }
 
-GD::State* DD::DigDugBehaviour::HandleInput() 
+GD::State* DD::DigDugBehaviour::HandleInput(float /*elapsedSec*/)
 {
 	StateID state = static_cast<StateID>(GetEntity()->GetState()->GetID());
 
 	if (m_Collider && state != StateID::Dying) 
 	{
-		if (m_Collider->CollidesWith("enemy"))
+		if (m_Collider->CollidesWith("enemy") || m_Collider->CollidesWith("rock"))
 			return new Dying();
 	}
 
@@ -65,6 +69,53 @@ GD::State* DD::DigDugBehaviour::HandleInput()
 		go_Projectile->AddComponent(physics);
 		go_Projectile->SetPosition(GetEntity()->m_GameObject->GetPosition());
 		return new Attacking(0.5f, go_Projectile);
+	}
+
+	return nullptr;
+}
+
+
+void DD::RockBehaviour::Initialize()
+{
+	m_LastPos = GetEntity()->m_GameObject->GetPosition();
+	m_Physics = GetEntity()->m_GameObject->GetComponent<GD::Physics>();
+	m_Collider = GetEntity()->m_GameObject->GetComponent<GD::Collider>();
+}
+
+GD::State* DD::RockBehaviour::HandleInput( float elapsedSec )
+{
+	//StateID state = static_cast<StateID>(GetEntity()->GetState()->GetID());
+
+	if (m_WiggleTimer < -0.5f) 
+	{
+		if (m_LastPos != GetEntity()->m_GameObject->GetPosition())
+		{
+			GetEntity()->m_GameObject->SetPosition(m_LastPos);
+			if (m_Physics)
+				m_Physics->SetEnabled(false);
+			m_WiggleTimer = 1.0f;
+		}
+	}	
+	else if (m_WiggleTimer < -0.3f) 
+	{
+		if (abs(m_LastPos.y - GetEntity()->m_GameObject->GetPosition().y) < 0.0001f)
+			if (m_Collider)
+				m_Collider->SetTag("");
+		m_LastPos = GetEntity()->m_GameObject->GetPosition();
+	}
+	else
+	{
+		if (m_WiggleTimer >= 0)
+			m_WiggleTimer -= elapsedSec;
+		if (m_WiggleTimer < 0) 
+		{
+			if (m_Physics)
+				m_Physics->SetEnabled(true);
+			m_WiggleTimer = -0.4f;
+			m_LastPos = GetEntity()->m_GameObject->GetPosition();
+			if (m_Collider)
+				m_Collider->SetTag("rock");
+		}
 	}
 
 	return nullptr;

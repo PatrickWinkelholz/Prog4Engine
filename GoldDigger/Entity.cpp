@@ -8,9 +8,7 @@ void GD::State::Enter()
 {
 	GD::Sprite* sprite = GetEntity()->m_GameObject->GetComponent<Sprite>();
 	if (sprite) 
-	{
 		sprite->PlayAnimation(m_ID);
-	}
 }
 
 void GD::MoveState::Enter()
@@ -40,22 +38,30 @@ GD::Entity::Entity(Behaviour* behaviour, Agent* agent, State* initialState)
 	, m_Agent{ agent }
 	, m_State{ initialState }
 {
-	m_Behaviour->m_Entity = this;
-	m_Agent->m_Entity = this;
-	m_State->m_Entity = this;
+	if (m_Behaviour)
+		m_Behaviour->m_Entity = this;
+	if (m_Agent)
+		m_Agent->m_Entity = this;
+	if (m_State)
+		m_State->m_Entity = this;
 }
 
 GD::Entity::~Entity() 
 {
-	delete m_Agent;
-	delete m_Behaviour;
-	delete m_State;
+	if (m_Agent)
+		delete m_Agent;
+	if (m_Behaviour)
+		delete m_Behaviour;
+	if (m_State)
+		delete m_State;
 }
 
 void GD::Entity::Initialize() 
 {
-	m_Agent->Initialize( &m_Input );
-	m_Behaviour->Initialize();
+	if (m_Agent)
+		m_Agent->Initialize( &m_Input );
+	if (m_Behaviour)
+		m_Behaviour->Initialize();
 }
 
 void GD::Entity::Update(float elapsedSec)
@@ -68,11 +74,15 @@ void GD::Entity::Update(float elapsedSec)
 	//function look a bit nicer but then i would need a 'FygarWalking', 'DigDugWalking' state and so on.
 
 	m_Input = {};
-	m_Agent->GenerateInput(*m_GameObject, elapsedSec);
-	GD::State* state = m_Behaviour->HandleInput();
+	if (m_Agent)
+		m_Agent->GenerateInput(*m_GameObject, elapsedSec);
+	GD::State* state = nullptr;
+	if (m_Behaviour)
+		state = m_Behaviour->HandleInput(elapsedSec);
 	if (state)
 		ChangeState(state);
-	state = m_State->Update( elapsedSec);
+	if (m_State)
+		state = m_State->Update( elapsedSec);
 	if (state)
 		ChangeState(state);
 }

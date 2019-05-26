@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Collider.h"
 
-const GD::Vector2 GD::Physics::m_Gravity{ 0, -9.8f};
+const GD::Vector2 GD::Physics::m_Gravity{ 0, 2000.f};
 
 void GD::Physics::Initialize() 
 {
@@ -12,8 +12,9 @@ void GD::Physics::Initialize()
 
 void GD::Physics::Update( float deltaTime ) 
 {
+	//TODO: use actual acceleration
 	if (m_UseGravity)
-		m_Acceleration += m_Gravity * deltaTime;
+		m_Acceleration = m_Gravity * deltaTime;
 
 	m_Velocity = m_MoveDirection.Normalized() * m_MaxSpeed;
 	m_Velocity += m_Acceleration;

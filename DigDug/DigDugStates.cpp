@@ -218,3 +218,19 @@ void DD::Pumped::Exit()
 	if (m_Sprite)
 		m_Sprite->SetRenderMode(GD::RenderMode::corner);
 }
+
+void DD::Dying::Enter() 
+{
+	m_Sprite = GetEntity()->m_GameObject->GetComponent<GD::Sprite>();
+
+	GD::State::Enter();
+}
+
+GD::State* DD::Dying::Update(float /*elapsedSec*/) 
+{
+	if (m_Sprite)
+		if (m_Sprite->GetTimer() < -0.5f)
+			GetEntity()->m_GameObject->Destroy();
+
+	return nullptr;
+}

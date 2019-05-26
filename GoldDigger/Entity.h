@@ -75,7 +75,7 @@ namespace GD
 		virtual ~Behaviour() = default;
 
 		virtual void Initialize() = 0;
-		virtual GD::State* HandleInput() = 0;
+		virtual GD::State* HandleInput(float elapsedSec) = 0;
 
 	protected:
 		Entity* GetEntity() const { return m_Entity; };

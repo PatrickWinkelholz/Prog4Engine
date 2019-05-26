@@ -16,7 +16,7 @@ namespace DD
 		~EnemyBehaviour() = default;
 
 		void Initialize() override;
-		GD::State* HandleInput() override;
+		GD::State* HandleInput(float elapsedSec) override;
 
 	private:
 		GD::Collider* m_Collider;
@@ -30,9 +30,26 @@ namespace DD
 		~DigDugBehaviour() = default;
 
 		void Initialize() override;
-		GD::State* HandleInput() override;
+		GD::State* HandleInput(float elapsedSec) override;
 	
 	private:
+		GD::Collider* m_Collider;
+	};
+
+	class RockBehaviour : public GD::Behaviour 
+	{
+	public:
+
+		RockBehaviour() = default;
+		~RockBehaviour() = default;
+
+		void Initialize() override;
+		GD::State* HandleInput(float elapsedSec) override;
+
+	private:
+		GD::Vector2 m_LastPos;
+		float m_WiggleTimer = -1.0f;
+		GD::Physics* m_Physics;
 		GD::Collider* m_Collider;
 	};
 }

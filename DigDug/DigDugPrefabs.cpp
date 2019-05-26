@@ -121,6 +121,22 @@ GD::GameObject* DD::DigDugPrefabs::CreateTunnel(GD::Scene& scene)
 	return go_Tunnel;
 }
 
+GD::GameObject* DD::DigDugPrefabs::CreateRock(GD::Scene& scene, float x, float y, const GD::Grid& grid) 
+{
+	GameObject* go_Rock = scene.CreateGameObject(static_cast<unsigned int>(Layer::Foreground));
+	Texture* rockTexture = go_Rock->CreateTexture();
+	go_Rock->AddComponent( new Sprite(rockTexture, "Rock" ));
+	Collider* rockCollider = new Collider(rockTexture, "", 1.f);
+	go_Rock->AddComponent( rockCollider );
+	go_Rock->AddComponent(new Physics(40.f, true, rockCollider, "tunnel"));
+	go_Rock->AddComponent(new Entity(new RockBehaviour(), nullptr, new Idle()));
+	
+	GameObject* go_RockTunnel = DD::DigDugPrefabs::CreateTunnel( scene );
+	go_RockTunnel->SetPosition(x, y, grid);
+	go_Rock->SetPosition(go_RockTunnel->GetPosition().x, go_RockTunnel->GetPosition().y + 1.0f);
+	return go_Rock;
+}
+
 void DD::DigDugPrefabs::GenerateTunnels(GD::Scene& scene, const GD::Vector2& start, const GD::Vector2& direction, int length, const GD::Grid& grid) 
 {
 	Vector2 startPos{ start };

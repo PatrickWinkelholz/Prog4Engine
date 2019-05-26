@@ -98,6 +98,10 @@ void DD::Level1Scene::Load()
 	GameObject* go_Fygar = DD::DigDugPrefabs::CreateFygar(*this,
 		gameMode == GameMode::Versus ? GD::ControllerIndex::One : GD::ControllerIndex::Any);
 	go_Fygar->SetPosition(2.f, 8.f, grid);
+
+	GameObject* go_Rock = DD::DigDugPrefabs::CreateRock(*this, 8.f, 4.f, grid);
+	(go_Rock);
+
 }
 
 void DD::Level2Scene::Load() 

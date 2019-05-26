@@ -17,6 +17,7 @@ namespace GD
 		void Update(float elapsedSec) override;
 
 		std::string GetTag() const { return m_Tag; };
+		void SetTag( std::string&& tag) { m_Tag = tag; }
 		GameObject* CollidesWith( const std::string&& tag ) const;
 		bool IsInside(const std::string&& tag) const;
 		void UpdateCollisionBox();

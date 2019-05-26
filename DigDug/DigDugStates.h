@@ -121,7 +121,11 @@ namespace DD
 		Dying() : State(static_cast<unsigned int>(StateID::Dying)) {};
 		~Dying() = default;
 
-		GD::State* Update(float /*elapsedSec*/) override { return nullptr; };
+		void Enter() override;
+		GD::State* Update(float elapsedSec) override;
+
+	private:
+		GD::Sprite* m_Sprite;
 	};
 
 	class Pumped : public GD::State 

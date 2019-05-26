@@ -1,12 +1,14 @@
 #pragma once
-#include "GameObject.h"
 
 namespace GD
 {
+	class Entity;
+
 	class Observer
 	{
 	public:
 		virtual ~Observer() {}
-		virtual void onNotify(GameObject& caller, Event event) = 0;
+
+		virtual void OnNotify(Entity* caller, unsigned int event) = 0;
 	};
 }

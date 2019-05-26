@@ -5,6 +5,8 @@
 
 namespace GD
 {
+	class Observer;
+
 	class Scene
 	{
 	public:
@@ -22,7 +24,8 @@ namespace GD
 		void Clear() { m_Clear = true; };
 		
 		virtual void Load() = 0;
-		GameObject* CreateGameObject( unsigned int layer = 0);
+		GameObject* CreateGameObject( unsigned int LayerID = 0);
+		void AddObserver( Observer* observer);
 
 	private: 
 
@@ -32,7 +35,9 @@ namespace GD
 		std::map<unsigned int, std::vector<GameObject*>> m_Objects;
 		std::map<unsigned int, std::vector<GameObject*>> m_NewObjects;
 		std::map<unsigned int, std::vector<GameObject*>> m_DestroyedObjects;
-		
+
+		std::vector<GD::Observer*> m_Observers;
+
 		bool m_Clear;
 	};
 }

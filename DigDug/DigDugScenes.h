@@ -3,6 +3,8 @@
 
 namespace DD 
 {
+	class ScoreDisplay;
+
 	class MenuScene : public GD::Scene 
 	{
 	public:

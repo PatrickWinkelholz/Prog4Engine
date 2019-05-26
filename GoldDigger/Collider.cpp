@@ -52,6 +52,7 @@ GD::GameObject* GD::Collider::CollidesWith( const std::string&& tag ) const
 	return nullptr;
 }
 
+//expensive function
 bool GD::Collider::IsInside(const std::string&& tag) const 
 {
 	//starting with the initial collisionbox substract from it's area every time a collider partly overlaps with it.

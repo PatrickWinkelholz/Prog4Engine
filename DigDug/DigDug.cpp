@@ -68,6 +68,7 @@ void DD::DigDug::LoadResources()
 	GD::ResourceManager::GetInstance().LoadTexture("Fire.png");
 	GD::ResourceManager::GetInstance().LoadTexture("DigDug.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Fygar.png");
+	GD::ResourceManager::GetInstance().LoadTexture("Lives.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Pooka.png");
 	GD::ResourceManager::GetInstance().LoadTexture("Background.png");
 }

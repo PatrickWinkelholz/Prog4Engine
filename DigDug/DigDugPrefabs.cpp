@@ -11,13 +11,14 @@
 #include "DigDugBehaviours.h"
 #include "DigDugStates.h"
 #include "DigDugCommands.h"
+#include "DigDugObservers.h"
 
 using namespace GD;
 
 GD::GameObject * DD::DigDugPrefabs::CreateMenuButton(GD::Scene& scene, const std::string&& text, 
 	const std::string&& font, GD::Command* command,const SDL_Color& onColor, const SDL_Color& offColor)
 {
-	GameObject* go_Button = scene.CreateGameObject(static_cast<unsigned int>(Layer::HUD));
+	GameObject* go_Button = scene.CreateGameObject(static_cast<unsigned int>(LayerID::HUD));
 	Texture* onTexture = go_Button->CreateTexture(RenderMode::center);
 	Texture* offTexture = go_Button->CreateTexture(RenderMode::center);
 	go_Button->AddComponent(new HudText(onTexture, std::move(text), std::move(font), onColor));
@@ -26,9 +27,10 @@ GD::GameObject * DD::DigDugPrefabs::CreateMenuButton(GD::Scene& scene, const std
 	return go_Button;
 }
 
-GD::GameObject * DD::DigDugPrefabs::CreateDigDug(GD::Scene& scene, GD::ControllerIndex index )
+GD::GameObject * DD::DigDugPrefabs::CreateDigDug(GD::Scene& scene, float x, float y, GD::ControllerIndex index, 
+	const GD::Vector2& lifeDisplayPosition, const GD::Grid& grid)
 {
-	GameObject* go_DigDug = scene.CreateGameObject(static_cast<unsigned int>(Layer::Foreground));
+	GameObject* go_DigDug = scene.CreateGameObject(static_cast<unsigned int>(LayerID::Foreground));
 	Texture* digDugTexture = go_DigDug->CreateTexture();
 	Sprite* digDugSprite = new Sprite(digDugTexture, "DigDug");
 	digDugSprite->AddAnimation(static_cast<unsigned int>(StateID::Idle), Animation{ 1, 0, { {0, 0}, {16.f, 16.f} } });
@@ -43,15 +45,29 @@ GD::GameObject * DD::DigDugPrefabs::CreateDigDug(GD::Scene& scene, GD::Controlle
 	digDugAgent->AssignAxis(GD::ControllerAxis::LeftStickX, new MoveHorizontal());
 	digDugAgent->AssignAxis(GD::ControllerAxis::LeftStickY, new MoveVertical());
 	digDugAgent->AssignButton(ControllerButton::X, ButtonState::Pressed, new Attack());
-	go_DigDug->AddComponent(new Entity(new DigDugBehaviour(), digDugAgent, new Idle()));
+	Entity* digDugEntity = new Entity(new DigDugBehaviour(), digDugAgent, new Idle());
+	go_DigDug->AddComponent( digDugEntity );
 	go_DigDug->AddComponent(new Physics(40.f));
 	go_DigDug->AddComponent(new GridSnap(DigDug::GetGrid()));
+	go_DigDug->SetPosition(x, y, grid);
+
+	GameObject* go_LifeDisplay = scene.CreateGameObject(static_cast<unsigned int>(LayerID::HUD));
+	Texture* lifeDisplayTexture = go_LifeDisplay->CreateTexture();
+	go_LifeDisplay->AddComponent(new Sprite(lifeDisplayTexture, "Lives"));
+	go_LifeDisplay->SetPosition(lifeDisplayPosition);
+
+	LifeDisplay* lifeDisplay = new LifeDisplay( lifeDisplayTexture, 3 );
+	digDugEntity->AddObserver(lifeDisplay);
+
+	scene.AddObserver(lifeDisplay);
+
 	return go_DigDug;
 }
 
-GD::GameObject* DD::DigDugPrefabs::CreatePooka(GD::Scene& scene, GD::ControllerIndex index)
+GD::GameObject* DD::DigDugPrefabs::CreatePooka(GD::Scene& scene, float x, float y, 
+	DD::ScoreDisplay* scoreDisplay, GD::ControllerIndex index, const GD::Grid& grid)
 {
-	GameObject* go_Pooka = scene.CreateGameObject(static_cast<unsigned int>(Layer::Foreground));
+	GameObject* go_Pooka = scene.CreateGameObject(static_cast<unsigned int>(LayerID::Foreground));
 	Texture* pookaTexture = go_Pooka->CreateTexture();
 	Sprite* pookaSprite = new Sprite(pookaTexture, "Pooka");
 	pookaSprite->AddAnimation(static_cast<unsigned int>(StateID::Idle), Animation{ 1, 0, { {0, 0}, {16.f, 16.f} } });
@@ -63,25 +79,30 @@ GD::GameObject* DD::DigDugPrefabs::CreatePooka(GD::Scene& scene, GD::ControllerI
 	go_Pooka->AddComponent( pookaCollider );
 	go_Pooka->AddComponent(pookaSprite);
 
+	Entity* pookaEntity;
 	if (index != ControllerIndex::Any)
 	{
-		PlayerInputAgent* pookaPlayerAgent = new PlayerInputAgent(ControllerIndex::One);
-		pookaPlayerAgent->AssignAxis(ControllerAxis::LeftStickX, new MoveHorizontal());
-		pookaPlayerAgent->AssignAxis(ControllerAxis::LeftStickY, new MoveVertical());
-		pookaPlayerAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Float());
-		go_Pooka->AddComponent(new Entity(new EnemyBehaviour(), pookaPlayerAgent, new Idle()));
+		PlayerInputAgent* pookaPLayerIDAgent = new PlayerInputAgent(ControllerIndex::One);
+		pookaPLayerIDAgent->AssignAxis(ControllerAxis::LeftStickX, new MoveHorizontal());
+		pookaPLayerIDAgent->AssignAxis(ControllerAxis::LeftStickY, new MoveVertical());
+		pookaPLayerIDAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Float());
+		pookaEntity = new Entity(new EnemyBehaviour(), pookaPLayerIDAgent, new Idle());
 	}
 	else
-		go_Pooka->AddComponent(new Entity(new EnemyBehaviour(), new EnemyBaseAgent(), new Idle()));
+		pookaEntity = new Entity(new EnemyBehaviour(), new EnemyBaseAgent(), new Idle());
 
+	pookaEntity->AddObserver(scoreDisplay);
+	go_Pooka->AddComponent(pookaEntity);
 	go_Pooka->AddComponent(new Physics(40.f, false, pookaCollider, "tunnel"));
 	go_Pooka->AddComponent(new GridSnap(DigDug::GetGrid()));
+	go_Pooka->SetPosition(x, y, grid);
 	return go_Pooka;
 }
 
-GD::GameObject * DD::DigDugPrefabs::CreateFygar(GD::Scene& scene, GD::ControllerIndex index )
+GD::GameObject * DD::DigDugPrefabs::CreateFygar(GD::Scene& scene, float x, float y, 
+	ScoreDisplay* scoreDisplay, GD::ControllerIndex index, const GD::Grid& grid)
 {
-	GameObject* go_Fygar = scene.CreateGameObject(static_cast<unsigned int>(Layer::Foreground));
+	GameObject* go_Fygar = scene.CreateGameObject(static_cast<unsigned int>(LayerID::Foreground));
 	Texture* fygarTexture = go_Fygar->CreateTexture();
 	Sprite* fygarSprite = new Sprite(fygarTexture, "Fygar");
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Idle), Animation{ 1, 0, { {0, 0}, {16.f, 16.f} } });
@@ -90,31 +111,35 @@ GD::GameObject * DD::DigDugPrefabs::CreateFygar(GD::Scene& scene, GD::Controller
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Dying), Animation{ 1, 3.0f, { {80.f, 0}, {96.f, 16.f} }, false });
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Attacking), Animation{ 1, 0, { {32.f, 0}, {48.f, 16.f} } });
 	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Charging), Animation{ 2, 0.09f, { {16.f, 0}, {48.f, 16.f} } });
-	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Pumped), Animation{ 4, 0.6f, { {0, 16.f}, {128.f, 48.f} }, false });
+	fygarSprite->AddAnimation(static_cast<unsigned int>(StateID::Pumped), Animation{ 4, 0.65f, { {0, 16.f}, {128.f, 48.f} }, false });
 	Collider* fygarCollider = new Collider(fygarTexture, "enemy", 2.0f);
 	go_Fygar->AddComponent(fygarCollider);
 	go_Fygar->AddComponent(fygarSprite);
 
+	Entity* fygarEntity;
 	if (index != ControllerIndex::Any)
 	{
-		PlayerInputAgent* fygarPlayerAgent = new PlayerInputAgent(ControllerIndex::One);
-		fygarPlayerAgent->AssignAxis(ControllerAxis::LeftStickX, new MoveHorizontal());
-		fygarPlayerAgent->AssignAxis(ControllerAxis::LeftStickY, new MoveVertical());
-		fygarPlayerAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Float());
-		fygarPlayerAgent->AssignButton(ControllerButton::X, ButtonState::Pressed, new Attack());
-		go_Fygar->AddComponent(new Entity(new EnemyBehaviour(), fygarPlayerAgent, new Idle()));
+		PlayerInputAgent* fygarPLayerIDAgent = new PlayerInputAgent(ControllerIndex::One);
+		fygarPLayerIDAgent->AssignAxis(ControllerAxis::LeftStickX, new MoveHorizontal());
+		fygarPLayerIDAgent->AssignAxis(ControllerAxis::LeftStickY, new MoveVertical());
+		fygarPLayerIDAgent->AssignButton(ControllerButton::A, ButtonState::Pressed, new Float());
+		fygarPLayerIDAgent->AssignButton(ControllerButton::X, ButtonState::Pressed, new Attack());
+		fygarEntity = new Entity(new EnemyBehaviour(), fygarPLayerIDAgent, new Idle());
 	}
 	else
-		go_Fygar->AddComponent(new Entity(new EnemyBehaviour(), new FygarAgent(), new Idle()));
+		fygarEntity = new Entity(new EnemyBehaviour(), new FygarAgent(), new Idle());
 
+	fygarEntity->AddObserver(scoreDisplay);
+	go_Fygar->AddComponent(fygarEntity);
 	go_Fygar->AddComponent(new Physics(40.f, false, fygarCollider, "tunnel"));
 	go_Fygar->AddComponent(new GridSnap(DigDug::GetGrid()));
+	go_Fygar->SetPosition(x, y, grid);
 	return go_Fygar;
 }
 
 GD::GameObject* DD::DigDugPrefabs::CreateTunnel(GD::Scene& scene) 
 {
-	GameObject* go_Tunnel = scene.CreateGameObject(static_cast<unsigned int>(Layer::Tunnel));
+	GameObject* go_Tunnel = scene.CreateGameObject(static_cast<unsigned int>(LayerID::Tunnel));
 	Texture* tunnelTexture = go_Tunnel->CreateTexture();
 	go_Tunnel->AddComponent(new Sprite(tunnelTexture, "Tunnel"));
 	go_Tunnel->AddComponent(new Collider(tunnelTexture, "tunnel"));
@@ -123,17 +148,22 @@ GD::GameObject* DD::DigDugPrefabs::CreateTunnel(GD::Scene& scene)
 
 GD::GameObject* DD::DigDugPrefabs::CreateRock(GD::Scene& scene, float x, float y, const GD::Grid& grid) 
 {
-	GameObject* go_Rock = scene.CreateGameObject(static_cast<unsigned int>(Layer::Foreground));
+	GameObject* go_Rock = scene.CreateGameObject(static_cast<unsigned int>(LayerID::Foreground));
 	Texture* rockTexture = go_Rock->CreateTexture();
-	go_Rock->AddComponent( new Sprite(rockTexture, "Rock" ));
-	Collider* rockCollider = new Collider(rockTexture, "", 1.f);
+	Sprite* rockSprite = new Sprite(rockTexture, "Rock");
+	rockSprite->AddAnimation(static_cast<unsigned int>(StateID::Idle), Animation{ 1, 0, { {16.f, 0}, {32.f, 16.f} } });
+	rockSprite->AddAnimation(static_cast<unsigned int>(StateID::Charging), Animation{ 2, 0.2f, { {0, 0}, {32.f, 16.f} } });
+	rockSprite->AddAnimation(static_cast<unsigned int>(StateID::Walking), Animation{ 1, 0, { {16.f, 0}, {32.f, 16.f} } });
+	rockSprite->AddAnimation(static_cast<unsigned int>(StateID::Dying), Animation{ 3, 0.4f, { {16.f, 0}, {64.f, 16.f} }, false });
+	go_Rock->AddComponent( rockSprite );
+	Collider* rockCollider = new Collider(rockTexture, "", 2.f);
 	go_Rock->AddComponent( rockCollider );
 	go_Rock->AddComponent(new Physics(40.f, true, rockCollider, "tunnel"));
 	go_Rock->AddComponent(new Entity(new RockBehaviour(), nullptr, new Idle()));
 	
 	GameObject* go_RockTunnel = DD::DigDugPrefabs::CreateTunnel( scene );
 	go_RockTunnel->SetPosition(x, y, grid);
-	go_Rock->SetPosition(go_RockTunnel->GetPosition().x, go_RockTunnel->GetPosition().y + 1.0f);
+	go_Rock->SetPosition(go_RockTunnel->GetPosition().x, go_RockTunnel->GetPosition().y + 2.0f);
 	return go_Rock;
 }
 

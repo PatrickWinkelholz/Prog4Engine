@@ -8,6 +8,8 @@ namespace GD
 	class Behaviour;
 	class State;
 	class Physics;
+	class Observer;
+	class Subject;
 
 	class Entity : public BaseComponent
 	{
@@ -21,7 +23,11 @@ namespace GD
 		Behaviour* GetBehaviour() const { return m_Behaviour; };
 		Agent* GetAgent() const { return m_Agent; };
 		State* GetState() const { return m_State; };
+		Subject* GetSubject() const { return m_Subject; };
 		Input GetInput() const { return m_Input; }
+		void SetInput(const Input& input) { m_Input = input; };
+		void AddObserver(Observer* observer);
+		void RemoveObserver(Observer* observer);
 
 	private:
 		void ChangeState( State* state);
@@ -29,6 +35,7 @@ namespace GD
 		Behaviour* m_Behaviour;
 		Agent* m_Agent;
 		State* m_State;
+		Subject* m_Subject;
 		Input m_Input;
 	};
 

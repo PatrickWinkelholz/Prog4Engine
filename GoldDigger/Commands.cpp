@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Components.h"
 #include "GameObject.h"
+#include <thread>
 
 void GD::MoveHorizontal::Execute(const GD::GameObject& /*gameObject*/, float axisValue)
 {
@@ -17,8 +18,10 @@ void GD::MoveVertical::Execute(const GD::GameObject& /*gameObject*/, float axisV
 
 void GD::SwitchScene::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/)
 {
-	GD::SceneManager::GetInstance().ClearCurrentScene();
+	std::thread clearSceneThread([]{GD::SceneManager::GetInstance().ClearCurrentScene();});
 	GD::SceneManager::GetInstance().LoadScene(m_SceneID);
+	if (clearSceneThread.joinable())
+		clearSceneThread.join();
 	GD::SceneManager::GetInstance().SwitchScene(m_SceneID);
 }
 
@@ -48,7 +51,6 @@ void GD::ExecuteCurrentButton::Execute(const GD::GameObject& /*gameObject*/, flo
 {
 	if (GD::MenuButton::s_ActiveButton)
 		GD::MenuButton::s_ActiveButton->ExecuteCommand();
-	//GD::MenuButton::s_ActiveButton
 }
 
 void GD::QuitGame::Execute(const GD::GameObject& /*gameObject*/, float /*axisValue*/) 

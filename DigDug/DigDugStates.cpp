@@ -9,10 +9,13 @@
 
 GD::State* DD::Walking::Update(float elapsedSec)
 {
-	float moveLength{ GetEntity()->GetInput().movement.LengthSquared() };
+	if (m_AutoHalt) 
+	{
+		float moveLength{ GetEntity()->GetInput().movement.LengthSquared() };
 
-	if (moveLength == 0)
-		return new Idle();
+		if (moveLength == 0)
+			return new Idle();
+	}
 
 	return MoveState::Update(elapsedSec);
 }
@@ -109,16 +112,6 @@ void DD::Floating::Exit()
 GD::State* DD::Charging::Update(float elapsedSec) 
 {
 	m_Timer += elapsedSec;
-	if (m_Timer > m_Duration) 
-	{
-		GD::GameObject* go_Fire = GD::SceneManager::GetInstance().GetActiveScene()->CreateGameObject(static_cast<unsigned int>(Layer::Foreground));
-		GD::Texture* FireTexture = go_Fire->CreateTexture();
-		go_Fire->AddComponent(new GD::Sprite(FireTexture, "Fire"));
-		go_Fire->AddComponent(new GD::Collider(FireTexture, "enemy"));
-		GD::Vector2 pos = GetEntity()->m_GameObject->GetPosition();
-		go_Fire->SetPosition({ pos.x + 16.f, pos.y });
-		return new Attacking(0.75f, go_Fire);
-	}
 	return nullptr;
 }
 
@@ -140,7 +133,8 @@ GD::State* DD::Attacking::Update(float elapsedSec)
 		if (m_ProjectileCollider->GetTag() == "projectile")
 		{
 			m_ProjectileCollider->UpdateCollisionBox();
-			if (m_ProjectileCollider->CollidesWith("enemy")) 
+			if (m_ProjectileCollider->CollidesWith("enemy")
+				|| m_ProjectileCollider->CollidesWith("pumpedEnemy")) 
 			{
 				Pumping* pumping = new Pumping(m_ProjectileCollider);
 				GD::Physics* projectilePhysics = m_Projectile->GetComponent<GD::Physics>();
@@ -171,7 +165,7 @@ GD::State* DD::Pumping::Update(float /*elapsedSec*/)
 		return new Walking();
 
 	if (m_ProjectileCollider)
-		if (!m_ProjectileCollider->CollidesWith("enemy"))
+		if (!m_ProjectileCollider->CollidesWith("pumpedEnemy"))
 			return new Idle();
 
 	return nullptr;
@@ -186,6 +180,11 @@ void DD::Pumping::Exit()
 void DD::Pumped::Enter() 
 {
 	m_Collider = GetEntity()->m_GameObject->GetComponent<GD::Collider>();
+	if (m_Collider) 
+	{
+		m_OriginalTag = m_Collider->GetTag();
+		m_Collider->SetTag("pumpedEnemy");
+	}
 	m_Sprite = GetEntity()->m_GameObject->GetComponent<GD::Sprite>();
 	if (m_Sprite)
 		m_Sprite->SetRenderMode(GD::RenderMode::centerLeft);
@@ -204,8 +203,11 @@ GD::State* DD::Pumped::Update(float/* elapsedSec*/)
 
 		if (m_Sprite->GetTimer() < -0.5f) 
 		{
-			if (m_Inflating)
+			if (m_Inflating) 
+			{
+				GetEntity()->GetSubject()->Notify(GetEntity(), static_cast<unsigned int>(EventID::EnemyPumped));
 				GetEntity()->m_GameObject->Destroy();
+			}
 			else
 				return new Idle();
 		}
@@ -217,18 +219,23 @@ void DD::Pumped::Exit()
 {
 	if (m_Sprite)
 		m_Sprite->SetRenderMode(GD::RenderMode::corner);
+	if (m_Collider)
+		m_Collider->SetTag(m_OriginalTag.c_str());
 }
 
 void DD::Dying::Enter() 
 {
 	m_Sprite = GetEntity()->m_GameObject->GetComponent<GD::Sprite>();
+	GD::Collider* collider = GetEntity()->m_GameObject->GetComponent<GD::Collider>();
+	if (collider)
+		collider->SetTag("");
 
 	GD::State::Enter();
 }
 
 GD::State* DD::Dying::Update(float /*elapsedSec*/) 
 {
-	if (m_Sprite)
+	if (m_Sprite && m_AutoDestroy)
 		if (m_Sprite->GetTimer() < -0.5f)
 			GetEntity()->m_GameObject->Destroy();
 

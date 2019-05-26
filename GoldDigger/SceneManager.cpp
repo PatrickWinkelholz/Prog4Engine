@@ -18,7 +18,7 @@ void GD::SceneManager::Update(float deltaTime)
 
 void GD::SceneManager::FixedUpdate() 
 {
-	
+	//Fixed Update isn't utilized for now
 }
 
 void GD::SceneManager::Render()
@@ -61,7 +61,6 @@ void GD::SceneManager::LoadScene(unsigned int id)
 		return;
 	}
 
-	//TODO: use threading for this
 	m_Scenes[id]->Load();
 	m_Scenes[id]->Initialize();
 

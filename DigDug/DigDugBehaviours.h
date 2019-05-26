@@ -5,6 +5,7 @@ namespace GD
 {
 	class State;
 	class Collider;
+	class Sprite;
 };
 
 namespace DD
@@ -34,6 +35,8 @@ namespace DD
 	
 	private:
 		GD::Collider* m_Collider;
+		GD::Sprite* m_Sprite;
+		GD::Vector2 m_StartPos;
 	};
 
 	class RockBehaviour : public GD::Behaviour 
@@ -48,7 +51,6 @@ namespace DD
 
 	private:
 		GD::Vector2 m_LastPos;
-		float m_WiggleTimer = -1.0f;
 		GD::Physics* m_Physics;
 		GD::Collider* m_Collider;
 	};

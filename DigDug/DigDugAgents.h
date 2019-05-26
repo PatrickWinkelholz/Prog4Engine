@@ -2,7 +2,11 @@
 #include <BaseComponent.h>
 #include <Agents.h>
 
-class GD::GameObject;
+namespace GD 
+{
+	class GameObject;
+	class Collider;
+}
 
 namespace DD 
 {
@@ -19,8 +23,10 @@ namespace DD
 		void ChangeDirection();
 		inline float RandomRange( float low, float high);
 
+		float m_FloatTimer;
 		float m_Timer;
 		GD::Vector2 m_DirectionChangeTimeBounds;
+		GD::Collider* m_Collider;
 		float m_DirectionChangeTime;
 		GD::Vector2 m_Direction;
 	};
@@ -32,6 +38,9 @@ namespace DD
 		~FygarAgent() = default;
 
 		void GenerateInput(const GD::GameObject& gameObject, float elapsedSec) override;
+
+	private:
+		float m_AttackTimer;
 	};
 }
 

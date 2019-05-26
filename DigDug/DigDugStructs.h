@@ -1,5 +1,6 @@
 #pragma once
 #include <Structs.h>
+//place for general structs / enum specific to DigDug
 
 namespace DD
 {
@@ -36,11 +37,18 @@ namespace DD
 		Pumped,
 	};
 
-	enum class Layer : unsigned int 
+	enum class LayerID : unsigned int 
 	{
 		Background = 0,
 		Tunnel,
 		Foreground,
 		HUD
+	};
+
+	enum class EventID : unsigned int 
+	{
+		EnemyPumped = 0,
+		EnemyCrushed,
+		PLayerDied
 	};
 }

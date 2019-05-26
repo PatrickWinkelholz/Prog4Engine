@@ -1,21 +1,17 @@
-﻿  Collider.cpp
+﻿  Agents.cpp
+  Collider.cpp
   Commands.cpp
-  Agents.cpp
   Controller.cpp
   Entity.cpp
-  FPSCounter.cpp
   GameObject.cpp
+  GoldDigger.cpp
   GridSnap.cpp
   HudText.cpp
   InputManager.cpp
-  GoldDigger.cpp
   MenuButton.cpp
   Physics.cpp
-  Renderer.cpp
-  ResourceManager.cpp
   Scene.cpp
   SceneManager.cpp
-  Sprite.cpp
   Generating Code...
   GoldDigger.vcxproj -> C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\Debug\GoldDigger.lib
   C:\Users\doodl\Documents\gitRepos\PatrickWinkelholz\Prog4Engine\3rdParty\SDL2\lib\x86\SDL2.dll

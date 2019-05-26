@@ -2,22 +2,31 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include <algorithm>
+#include "Observer.h"
 
 GD::Scene::~Scene() 
 {
 	for (auto& pair : m_Objects) 
 		for (GameObject* object : pair.second)
 			delete object;
+
+	for (GD::Observer* observer : m_Observers)
+		delete observer;
 };
 
-GD::GameObject* GD::Scene::CreateGameObject( unsigned int layer )
+GD::GameObject* GD::Scene::CreateGameObject( unsigned int LayerID )
 {
-	/*if (layer > m_MaxLayer)
-		m_MaxLayer = layer;*/
+	/*if (LayerID > m_MaxLayerID)
+		m_MaxLayerID = LayerID;*/
 
 	GameObject* object = new GameObject();
-	m_NewObjects[layer].push_back(object);
+	m_NewObjects[LayerID].push_back(object);
 	return object;
+}
+
+void GD::Scene::AddObserver(GD::Observer* observer) 
+{
+	m_Observers.push_back(observer);
 }
 
 void GD::Scene::Initialize() 
@@ -59,6 +68,11 @@ void GD::Scene::Update(float deltaTime)
 		for (auto& pair : m_Objects)
 			for (GameObject* object : pair.second)
 				delete object;		
+
+		for (Observer* observer : m_Observers)
+			delete observer;
+
+		m_Observers.clear();
 		m_NewObjects.clear();
 		m_DestroyedObjects.clear();
 		m_Objects.clear();

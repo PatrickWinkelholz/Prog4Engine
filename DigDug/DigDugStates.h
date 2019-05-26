@@ -16,10 +16,15 @@ namespace DD
 	class Walking : public GD::MoveState 
 	{
 	public:
-		Walking() : MoveState( static_cast<unsigned int>( StateID::Walking ) ) {};
+		Walking( bool autoHalt = true ) 
+			: MoveState(static_cast<unsigned int>(StateID::Walking)) 
+			, m_AutoHalt{ autoHalt }
+		{};
 		~Walking() = default;
 
 		GD::State* Update(float elapsedSec) override;
+	private:
+		bool m_AutoHalt; // if set, the state will automatically switch to idle when there's no movement input
 	};
 
 	class Idle : public GD::State 
@@ -109,6 +114,7 @@ namespace DD
 		~Charging() = default;
 
 		GD::State* Update(float elapsedSec) override;
+		bool IsFinished() const { return m_Timer >= m_Duration; };
 
 	private:
 		float m_Timer;
@@ -118,7 +124,10 @@ namespace DD
 	class Dying : public GD::State 
 	{
 	public:
-		Dying() : State(static_cast<unsigned int>(StateID::Dying)) {};
+		Dying( bool autoDestroy = true ) 
+			: State(static_cast<unsigned int>(StateID::Dying)) 
+			, m_AutoDestroy{ autoDestroy }
+		{};
 		~Dying() = default;
 
 		void Enter() override;
@@ -126,6 +135,7 @@ namespace DD
 
 	private:
 		GD::Sprite* m_Sprite;
+		bool m_AutoDestroy;
 	};
 
 	class Pumped : public GD::State 
@@ -141,5 +151,6 @@ namespace DD
 	private:
 		bool m_Inflating;
 		GD::Sprite* m_Sprite;
+		std::string m_OriginalTag;
 	};
 }

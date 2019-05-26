@@ -171,6 +171,7 @@
     <ClInclude Include="DigDugCommands.h" />
     <ClInclude Include="DigDugAgents.h" />
     <ClInclude Include="DigDug.h" />
+    <ClInclude Include="DigDugObservers.h" />
     <ClInclude Include="DigDugPrefabs.h" />
     <ClInclude Include="DigDugScenes.h" />
     <ClInclude Include="DigDugStates.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="DigDugCommands.cpp" />
     <ClCompile Include="DigDugAgents.cpp" />
     <ClCompile Include="DigDug.cpp" />
+    <ClCompile Include="DigDugObservers.cpp" />
     <ClCompile Include="DigDugPrefabs.cpp" />
     <ClCompile Include="DigDugScenes.cpp" />
     <ClCompile Include="DigDugStates.cpp" />
